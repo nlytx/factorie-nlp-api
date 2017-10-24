@@ -294,7 +294,7 @@ abstract class CorefTrainer extends HyperparameterMain with Trackable{
   }
 
 }
-
+/*
 object StructuredCorefOptimizer{
   def main(args: Array[String]) {
     val opts = StructuredCorefTrainer.ProbCorefTrainerOpts
@@ -316,7 +316,8 @@ object StructuredCorefOptimizer{
     println("Done")
   }
 }
-
+*/
+/*
 object ForwardCorefOptimizer{
   def main(args: Array[String]) {
     val opts = ForwardCorefTrainer.opts
@@ -339,3 +340,4 @@ object ForwardCorefOptimizer{
     println("Done")
   }
 }
+*/

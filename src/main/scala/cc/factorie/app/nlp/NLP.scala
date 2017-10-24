@@ -10,6 +10,8 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+
+/*
 package cc.factorie.app.nlp
 
 import java.io._
@@ -22,11 +24,13 @@ import cc.factorie.app.nlp.parse._
 import cc.factorie.util.{ModelProvider, ModelProviderCmdOptions}
 
 import cc.factorie.app.nlp.ner.StaticLexiconFeatures
+*/
 
 /** A command-line driver for DocumentAnnotators.
     Launch on the command-line, specifying which NLP pipeline steps you want, 
     then it listens on a socket port for new text input, and replies with annoted text, one word per line.
     @author Andrew McCallum */
+/*
 object NLP {
   val annotators = new scala.collection.mutable.ArrayBuffer[DocumentAnnotator]
   var logStream = System.err
@@ -113,7 +117,9 @@ object NLP {
         System.exit(-1)
     }
   }
-  
+  */
+
+  /*
   case class ServerThread(socket: Socket, encoding:String, pipeline: DocumentAnnotator) extends Thread("ServerThread") {
     override def run(): Unit = try {
       val out = new PrintStream(socket.getOutputStream, false, encoding)
@@ -146,4 +152,4 @@ object NLP {
     }
   }
   
-}
+}*/

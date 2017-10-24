@@ -10,14 +10,14 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-package cc.factorie.app.mf
-
+//package cc.factorie.app.mf
+/*
 import cc.factorie._
 import cc.factorie.la.WeightsMapAccumulator
 import cc.factorie.model.Parameters
 import cc.factorie.util.DoubleAccumulator
 import cc.factorie.variable.DiscreteDomain
-
+*/
 /**
  * User: apassos
  * Date: 4/5/13
@@ -32,6 +32,7 @@ import cc.factorie.variable.DiscreteDomain
  * Algorithm from http://www.australianscience.com.au/research/google/37180.pdf
  * "WSABIE: Scaling Up To Large Vocabulary Image Annotation" by Weston, Bengio, and Usunier
  */
+/*
 object WSabie {
   class WSabieModel(val domain: DiscreteDomain, val numEmbeddings: Int, val rng: java.util.Random) extends Parameters {
     val weights = Weights(setToRandom(new la.DenseTensor2(numEmbeddings, domain.size), rng))
@@ -68,3 +69,4 @@ object WSabie {
     }
   }
 }
+*/

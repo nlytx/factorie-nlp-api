@@ -14,7 +14,8 @@
 package cc.factorie.util.namejuggler
 
 import cc.factorie.util.namejuggler.StringUtils._
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.lang3.StringEscapeUtils
+
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -24,7 +25,7 @@ object NameJuggler {
   def main(args: Array[String]) {
     if (args.find(_.==("--compat")).isDefined) {
       for (line <- Source.stdin.getLines.map(_.opt).flatten) {
-        val l = StringEscapeUtils.unescapeHtml(line).n
+        val l = StringEscapeUtils.unescapeHtml4(line).n
         val names = l.split("[\t;|]").map(_.trim).filterNot(_.isEmpty)
         val z = for (b <- names) yield (b, PersonNameWithDerivations(b.n).toCanonical)
         //val result = NameCliquer.allVsAllCompatibility(z)
@@ -45,7 +46,7 @@ object NameJuggler {
     else {
       println(Seq("prefixes", "givenNames", "nickNamesInQuotes", "surNames", "hereditySuffix", "degrees", "preferredFullName").mkString("\t"))
       for (line <- Source.stdin.getLines.map(_.opt).flatten) {
-        val l = StringEscapeUtils.unescapeHtml(line).n
+        val l = StringEscapeUtils.unescapeHtml4(line).n
         val p = PersonNameWithDerivations(l).inferFully.toCanonical
         println(p.fieldsInCanonicalOrder.map(_.mkString(" ")).mkString("\t"))
       }
