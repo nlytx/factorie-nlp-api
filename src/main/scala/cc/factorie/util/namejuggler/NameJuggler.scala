@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringEscapeUtils
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.io.Source
-
+/*
 object NameJuggler {
   def main(args: Array[String]) {
     if (args.find(_.==("--compat")).isDefined) {
@@ -54,7 +54,7 @@ object NameJuggler {
 
   }
 }
-
+*/
 object NameCliquer {
 
   def isClique(nodes: Set[String], adjacency: Map[String, Set[String]]): Boolean =

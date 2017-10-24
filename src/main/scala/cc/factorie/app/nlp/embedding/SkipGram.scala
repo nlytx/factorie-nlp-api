@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.embedding
 
 import java.io.File
@@ -19,10 +20,11 @@ import cc.factorie.model.Weights
 import cc.factorie.util.{DoubleAccumulator, IntArrayBuffer}
 
 import scala.collection.mutable.ArrayBuffer
-
+*/
 /**
  * Created by asubbaswamy on 8/17/15.
  */
+/*
 class SkipGramOptions extends WindowWordEmbedderOptions with IncrementalVocabularyOptions {
   val margin = new CmdOption("margin", 0.1, "DOUBLE", "Margin for WSABIE training.")
   val loss = new CmdOption("loss", "wsabie", "STRING", "Loss function; options are wsabie and log.")
@@ -148,7 +150,8 @@ class WsabieSkipGramExample(val model:SkipGram, val targetId:Int, val outputIndi
     }
   }
 }
-
+*/
+/*
 class SkipGram(override val opts:SkipGramOptions) extends WordEmbedder(opts) {
   def newExample(model:WordEmbedder, wordIndices:Array[Int], centerPosition:Int, window:Int): Option[SkipGramExample] = SkipGramExample(model.asInstanceOf[SkipGram], wordIndices, centerPosition, window)
 }
@@ -177,3 +180,4 @@ object SkipGram {
     println("SkipGram.main done.")
   }
 }
+*/

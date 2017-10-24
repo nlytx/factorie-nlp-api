@@ -10,4 +10,5 @@ object DocumentAnnotator {
 
   //lemma.WordNetLemmatizer
   //coref.NerStructuredCoref
+  //phrase.PosBasedNounPhraseFinder
 }

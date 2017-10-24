@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.embedding
 import java.io._
 import java.text.NumberFormat
@@ -92,7 +93,7 @@ abstract class WordEmbedder(val opts:WindowWordEmbedderOptions) extends Paramete
   /** Initialize the vocabulary into this.domain, either by the incrementalVocabMaxSize or by reading the vocabulary from a file. */
   def initDomain(): Int = {
     // Read in the vocabulary 
-    for (splitLine <- io.Source.fromFile(opts.vocabulary.value).getLines().map(_.split(' '))) domain.indexWithCount(splitLine(1), splitLine(0).toInt)
+    for (splitLine <- Source.fromFile(opts.vocabulary.value).getLines().map(_.split(' '))) domain.indexWithCount(splitLine(1), splitLine(0).toInt)
     println("Vocabulary size "+domain.size)
     println("Vocabulary total count "+domain.countsTotal)
     domain.freeze()
@@ -205,7 +206,7 @@ abstract class WordEmbedder(val opts:WindowWordEmbedderOptions) extends Paramete
     var neighborCount = 10
     def printPrompt(): Unit = { print(s"\n$neighborCount> "); System.out.flush() }
     printPrompt()
-    for (line <- io.Source.stdin.getLines()) {
+    for (line <- Source.stdin.getLines()) {
       val query = new DenseTensor1(dims)
       var queryTerms = 0
       for (word <- line.split("\\s+")) word match {
@@ -289,6 +290,7 @@ abstract class WordEmbedder(val opts:WindowWordEmbedderOptions) extends Paramete
   /** Given a file, return an iterator over the string contents of each "document".
       Returns nil if the filename suffix is not handled.
    */
+  /*
   def fileToStringIterator(file:File, encoding:String = "UTF8"): Iterator[String] = {
     file.getName match {
       // Plain text file
@@ -400,7 +402,7 @@ abstract class WordEmbedder(val opts:WindowWordEmbedderOptions) extends Paramete
       case _ => throw new Error("Unknown suffix on document name "+file.getName())
     }
   }
-
+*/
   // Recursively descend directory, returning a list of files.
   def recurseFiles(directory:File): Seq[File] = {
     if (!directory.exists) throw new Error("File "+directory+" does not exist")
@@ -531,3 +533,4 @@ trait IncrementalVocabulary extends WordEmbedder {
   }
 
 }
+*/

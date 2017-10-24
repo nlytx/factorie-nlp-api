@@ -13,7 +13,7 @@
 
 package cc.factorie.app.nlp.parse
 import cc.factorie.app.nlp._
-import cc.factorie.app.nlp.load.LoadOntonotes5
+//import cc.factorie.app.nlp.load.LoadOntonotes5
 import cc.factorie.util.Cubbie
 import cc.factorie.variable.{EnumDomain, LabeledCategoricalVariable}
 

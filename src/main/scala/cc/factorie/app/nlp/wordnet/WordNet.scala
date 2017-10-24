@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+
 package cc.factorie.app.nlp.wordnet
 
 import cc.factorie.util.ClasspathURL
@@ -17,12 +18,13 @@ import cc.factorie.util.ClasspathURL
 import scala.collection.immutable.HashMap
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.io.Source
 
 class WordNet(val inputStreamFactory: String=>java.io.InputStream) {
   def this(wordNetDir:java.io.File) = this((string:String) => new java.io.FileInputStream(new java.io.File(wordNetDir, string)))
 
   val resourcePath = "dict/"
-  def sourceFactory(string:String): io.Source = io.Source.fromInputStream(inputStreamFactory(resourcePath+string))
+  def sourceFactory(string:String): Source = Source.fromInputStream(inputStreamFactory(resourcePath+string))
   
   val ignoredSynsets = Set("n00002137", "n00001930", "n00001740")
   /* for converting from hexidecimal */
@@ -210,6 +212,7 @@ class Synset(val id: String, val hyps: Set[String], val ants: Set[String], wn: W
 
 object WordNet extends WordNet(s => ClasspathURL.fromDirectory[WordNet](s).openConnection().getInputStream)
 
+/*
 object WordNetTest {
   
   //System.setProperty("cc.factorie.app.nlp.wordnet.WordNet", "file:/Users/mccallum/research/data/resources/wordnet/WordNet-1.7.1")
@@ -239,3 +242,4 @@ object WordNetTest {
     println("[done small tests.]")
   }
 }
+*/

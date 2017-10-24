@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.lemma
 import cc.factorie.app.nlp._
 
@@ -26,3 +27,4 @@ class PorterLemmatizer extends DocumentAnnotator with Lemmatizer {
 object PorterLemmatizer extends PorterLemmatizer
 
 class PorterTokenLemma(token:Token, s:String) extends TokenLemma(token, s)
+*/

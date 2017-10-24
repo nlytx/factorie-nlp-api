@@ -29,6 +29,7 @@ import scala.io.Source
 /**
  * @author John Sullivan
  */
+/*
 object Relation {
 
   def main(args:Array[String]) {
@@ -72,6 +73,7 @@ object Relation {
     }
   }
 }
+*/
 
 object TACNerDomain extends CategoricalDomain[String] {
   this ++= "O ORG GPE_CITY GPE_COUNTRY GPE_STATE DATE PERSON CARDINAL AFFILIATION PERSON WEBSITE CAUSE_OF_DEATH LAW RELIGION TITLE".split(' ')
@@ -81,7 +83,7 @@ object TACNerDomain extends CategoricalDomain[String] {
 class TACNerTag(token:Token, initialCategory:String) extends NerTag(token, initialCategory) {
   def domain = TACNerDomain
 }
-
+/*
 object GoldRelation {
 
   def annotate(t:Token, annos:Seq[String]):Seq[MutableCategoricalVar[String]] = {
@@ -142,3 +144,4 @@ object GoldRelation {
     }
   }
 }
+*/

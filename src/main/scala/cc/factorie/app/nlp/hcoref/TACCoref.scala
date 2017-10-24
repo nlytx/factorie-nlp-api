@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.hcoref
 
 import java.io._
@@ -29,10 +30,11 @@ import cc.factorie.variable.{BagOfWordsVariable, CategoricalDomain, DenseDoubleB
 import scala.collection.mutable.{ArrayBuffer, HashMap}
 import scala.io.Source
 import scala.util.Random
-
+*/
 /**
  * @author John Sullivan
  */
+/*
 object TACCorefWithFactorie {
   def main(args:Array[String]) {
     val tacRoot = args(0)
@@ -524,3 +526,4 @@ object Embeddings{
     out.close
   }
 }
+*/

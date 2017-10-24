@@ -10,6 +10,8 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+
+/*
 package cc.factorie.app.nlp.pos
 
 import java.io._
@@ -22,10 +24,11 @@ import cc.factorie.util.{BinarySerializer, ClasspathURL, HyperparameterMain}
 import cc.factorie.variable.{BinaryFeatureVectorVariable, CategoricalVectorDomain, HammingObjective, LabeledMutableDiscreteVar, LabeledVar}
 
 import scala.reflect.ClassTag
-
+*/
 /** A linear-chain CRF part-of-speech tagger, doing inference by Viterbi.
     @author Alexandre Passos, Andrew McCallum
  */
+/*
 abstract class ChainPosTagger[A<:PosTag](val tagConstructor:(Token)=>A)(implicit ct:ClassTag[A]) extends DocumentAnnotator {
   def this(tagConstructor:(Token)=>A, url:java.net.URL)(implicit ct:ClassTag[A]) = { this(tagConstructor); deserialize(url.openConnection().getInputStream) }
   def process(document: Document) = {
@@ -108,7 +111,8 @@ abstract class ChainPosTagger[A<:PosTag](val tagConstructor:(Token)=>A)(implicit
 
   def initPOSFeatures(sentence: Sentence): Unit
 }
-
+*/
+/*
 class WSJChainPosTagger extends ChainPosTagger((t:Token) => new PennPosTag(t, 0)) with Serializable {
   def this(url: java.net.URL) = {
     this()  
@@ -144,7 +148,8 @@ class WSJChainPosTagger extends ChainPosTagger((t:Token) => new PennPosTag(t, 0)
   }
 }
 object WSJChainPosTagger extends WSJChainPosTagger(ClasspathURL[WSJChainPosTagger](".factorie"))
-
+*/
+/*
 class OntonotesChainPosTagger extends ChainPosTagger((t:Token) => new PennPosTag(t, 0)) with Serializable {
   def this(url: java.net.URL) = {
     this()  
@@ -179,9 +184,11 @@ class OntonotesChainPosTagger extends ChainPosTagger((t:Token) => new PennPosTag
     addNeighboringFeatureConjunctions(sentence.tokens, (t: Token) => t.attr[PosFeatures], "W=[^@]*$", List(-2), List(-1), List(1), List(-2,-1), List(-1,0))
   }
 }
+
 object OntonotesChainPosTagger extends OntonotesChainPosTagger(ClasspathURL[OntonotesChainPosTagger](".factorie")) with Serializable
+*/
 
-
+/*
 class ChainPosTrainer[A<:PosTag, B<:ChainPosTagger[A]](taggerConstructor: () => B, loadingMethod:(String) => Seq[Document])(implicit ct:ClassTag[A]) extends HyperparameterMain {
   def evaluateParameters(args: Array[String]): Double = {
     implicit val random = new scala.util.Random(0)
@@ -242,7 +249,8 @@ object OntonotesChainPosTrainer extends ChainPosTrainer[PennPosTag, OntonotesCha
   () => new OntonotesChainPosTagger(),
   (dirName: String) => load.LoadOntonotes5.fromFilename(dirName)
 )
-
+*/
+/*
 object ChainPosOptimizer {
   def main(args: Array[String]) {
     val opts = new ForwardPosOptions
@@ -308,3 +316,4 @@ object SpanishChainPosTrainer extends ChainPosTrainer[SpanishPosTag, SpanishChai
   () => new SpanishChainPosTagger(),
   (dirName: String) => load.LoadSpanishConll2008.fromFilename(dirName)
 )
+*/

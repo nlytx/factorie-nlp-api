@@ -657,7 +657,7 @@ class StackedChainNerOpts extends CmdOptions with SharedNLPCmdOptions{
   val useOffsetEmbedding = new CmdOption("useOffsetEmbeddings", true, "BOOLEAN", "Whether to use offset embeddings")
   val lang =      new CmdOption("language", "en", "STRING", "Lexicons language.")
 }
-
+/*
 object ConllStackedChainNerTester extends App {
   val opts = new StackedChainNerOpts
   opts.parse(args)
@@ -676,7 +676,8 @@ object ConllStackedChainNerTester extends App {
   
   println(ner.test(testDocs))
 }
-
+*/
+/*
 object ConllStackedChainNerTrainer extends HyperparameterMain {
   def evaluateParameters(args: Array[String]): Double = {
     // Parse command-line
@@ -721,7 +722,8 @@ object ConllStackedChainNerTrainer extends HyperparameterMain {
     result
   }
 }
-
+*/
+/*
 object ConllStackedChainNerOptimizer {
   def main(args: Array[String]) {
     val opts = new StackedChainNerOpts
@@ -757,3 +759,4 @@ object ConllStackedChainNerOptimizer {
     }
   }
 }
+*/

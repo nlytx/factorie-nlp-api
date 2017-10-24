@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.load
 import java.io.File
 
@@ -22,7 +23,8 @@ import cc.factorie.variable.SetVariable
 
 import scala.Array.fallbackCanBuildFrom
 import scala.xml.{NodeSeq, XML}
-
+*/
+/*
 trait ReACEMentionIdentifiers {
   val mId: Option[String]
   val eId: Option[String]
@@ -203,3 +205,4 @@ object LoadReACE {
   }
 
 }
+*/

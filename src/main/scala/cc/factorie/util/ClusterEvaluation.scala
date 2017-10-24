@@ -14,6 +14,7 @@ package cc.factorie.util
 
 import scala.Iterable
 import scala.collection.mutable._
+import scala.io.Source
 
 /** A generic trait for clustering solution containers that can be evaluated.
     @author Andrew McCallum */
@@ -60,7 +61,7 @@ class BasicEvaluatableClustering extends EvaluatableClustering[String,String] {
   /** Initialize from a String in the format returned by EvaluatableClustering.toString */
   def this(serialized:String) = this(EvaluatableClustering.stringToPointClusterPairs(serialized))
   /** Initialize from a io.Source whose contents are in the format returned by EvaluatableClustering.toString */
-  def this(serialized:io.Source) = this(EvaluatableClustering.stringToPointClusterPairs(serialized))
+  def this(serialized:Source) = this(EvaluatableClustering.stringToPointClusterPairs(serialized))
   private val clusterToPoints = new LinkedHashMap[String,LinkedHashSet[String]]
   private val pointToCluster = new LinkedHashMap[String,String]
   /** Add a new point-cluster pair, or change the cluster assignment of an existing point. */
@@ -90,9 +91,9 @@ class BasicEvaluatableClustering extends EvaluatableClustering[String,String] {
 object EvaluatableClustering {
   /** Return default constructor argument for BasicEvaluatableClustering given a String in the format returned by EvaluatableClustering.toString. */
   def stringToPointClusterPairs(s:String): Iterable[(String,String)] = 
-    stringToPointClusterPairs(io.Source.fromString(s))
+    stringToPointClusterPairs(Source.fromString(s))
   /** Return default constructor argument for BasicEvaluatableClustering given a Source in the format returned by EvaluatableClustering.toString. */
-  def stringToPointClusterPairs(source:io.Source): Iterable[(String,String)] = {
+  def stringToPointClusterPairs(source:Source): Iterable[(String,String)] = {
     val result = new scala.collection.mutable.ListBuffer[(String,String)]
     var clusterId: String = null
     for (line <- source.getLines()) {
@@ -103,7 +104,7 @@ object EvaluatableClustering {
     result
   }
   /** Return a BasicEvaluatableClustering given a File in the format returned by EvaluatableClustering.toString. */
-  def apply(file:java.io.File) = new BasicEvaluatableClustering(io.Source.fromFile(file))
+  def apply(file:java.io.File) = new BasicEvaluatableClustering(Source.fromFile(file))
   /** Return a BasicEvaluatableClustering given a String in the format returned by EvaluatableClustering.toString. */
   def apply(string:String) = new BasicEvaluatableClustering(string)
 
@@ -124,7 +125,7 @@ object EvaluatableClustering {
     sb.toString
   }
 }
-
+/*
 object ClusterEvaluation {
   /** Command-line utility for printing pairwise, MUC and B3 evaluation of predicted vs truth clusterings stored in files. */
   def main(args:Array[String]): Unit = {
@@ -134,7 +135,7 @@ object ClusterEvaluation {
     println(EvaluatableClustering.evaluationString(predicted, truth))
   }
     
-}
+} */
 
 /** A trait containing a method of evaluating the precision, recall and F1 of clustering solutions.
     @author Andrew McCallum */

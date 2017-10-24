@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.load
 
 import cc.factorie.app.nlp._
@@ -19,7 +20,7 @@ import cc.factorie.app.nlp.parse.ParseTree
 import cc.factorie.app.nlp.pos.LabeledPennPosTag
 
 import scala.io.Source
-
+*/
 /* Loader for the OntoNotes 5 data
    @author Brian Martin, Andrew McCallum
   1   token ID
@@ -39,7 +40,7 @@ import scala.io.Source
   15  gold named entity tags
   16  gold coreference
  */
-
+/*
 object LoadWSJMalt extends Load {
   private def addDepInfo(s: Sentence, depInfoSeq: Seq[(Int,Int,String)]): Unit = {
     //assert(depInfoSeq.map(_._1) == Seq.tabulate(depInfoSeq.length)(i => i), "Token indices: "+depInfoSeq.map(_._1).mkString(" ")) // Assert that we have an entry for each token index, in order
@@ -151,3 +152,4 @@ object LoadWSJMalt extends Load {
       printDocument(fromFilename(filename).head)
 
 }
+*/

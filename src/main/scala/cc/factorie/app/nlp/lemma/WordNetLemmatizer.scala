@@ -19,13 +19,15 @@ import cc.factorie.app.nlp.pos.{PennPosDomain, PennPosTag}
 import cc.factorie.app.nlp.wordnet.WordNet
 import cc.factorie.util.ClasspathURL
 
+import scala.io.Source
+
 // TODO Rather than reading the WordNet files here, I think this object should simply depend on newly-written methods in wordnet.WordNet. -akm 
 
 class WordNetLemmatizer(val inputStreamFactory: String=>InputStream) extends DocumentAnnotator {
   def this(wordNetDir:java.io.File) = this((string:String) => new FileInputStream(new java.io.File(wordNetDir, string)))
 
   val resourcePath = "dict/"
-  def sourceFactory(string:String): io.Source = io.Source.fromInputStream(inputStreamFactory(resourcePath+string))
+  def sourceFactory(string:String): Source = Source.fromInputStream(inputStreamFactory(resourcePath+string))
   
   val NOUN = "n"
   val VERB = "v"

@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import cc.factorie.variable.Proportions
 
 import scala.concurrent._
+import scala.io.Source
 import scala.util.Random
 
 /**
@@ -212,8 +213,8 @@ case class BoxedDouble(d: Double)
  */
 trait HyperparameterMain {
   def evaluateParameters(args: Array[String]): Double
-  final def main(args: Array[String]) { evaluateParameters(args) }
-  final def actualMain(args: Array[String]) = BoxedDouble(evaluateParameters(args))
+  //final def main(args: Array[String]) { evaluateParameters(args) }
+  //final def actualMain(args: Array[String]) = BoxedDouble(evaluateParameters(args))
 }
 
 /**
@@ -262,11 +263,11 @@ abstract class JobQueueExecutor(memory: Int, className: String, cores: Int = 1) 
       var tries = 0
       while (!done && tries < 10) {
         tries += 1
-        if (new java.io.File(outFile).exists() && io.Source.fromFile(outFile).getLines().toSeq.size > 0) done = true
+        if (new java.io.File(outFile).exists() && Source.fromFile(outFile).getLines().toSeq.size > 0) done = true
         else blocking { Thread.sleep(1000) }
       }
-      if (new java.io.File(outFile).exists && io.Source.fromFile(outFile).getLines().toSeq.size > 0)
-        io.Source.fromFile(outFile).getLines().toSeq.head.toDouble
+      if (new java.io.File(outFile).exists && Source.fromFile(outFile).getLines().toSeq.size > 0)
+        Source.fromFile(outFile).getLines().toSeq.head.toDouble
       else {
         println("Job " + thisId + " failed. See log file " + thisPrefix+"-log.txt for more information.")
         Double.NegativeInfinity
@@ -289,6 +290,7 @@ class QSubExecutor(memory: Int, className: String, cores: Int = 1) extends JobQu
  * I wish I could make this object private. It is the main function
  * actually running in the slaves started by QSubActorExecutor.
  */
+/*
 object QSubExecutor {
   object opts extends CmdOptions {
     val className = new CmdOption("className", "", "STRING", "Class to run")
@@ -313,3 +315,4 @@ object QSubExecutor {
     println(s"Done, file ${opts.outFile.value} written")
   }
 }
+*/

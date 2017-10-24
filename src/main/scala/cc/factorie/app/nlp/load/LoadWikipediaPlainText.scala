@@ -10,17 +10,18 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-
+/*
 package cc.factorie.app.nlp.load
 import java.io.{File, _}
 
 import cc.factorie.app.nlp._
 import org.apache.commons.compress.compressors.CompressorStreamFactory
-
+*/
 /** Create Documents from plain text files.
     By default create one Document per file.
     To create multiple Documents from one file, set documentSeparator regex.  
     If the regex specifies a group (via parenthesis) then the Document's name will be set to the match of the contents of this first group. */
+/*
 class LoadWikipediaPlainText {
   /** This assumes that the file has format of enwiki-latest-pages-articles.xml.bz2. */
   def fromCompressedFilename(filename: String, maxArticleCount: Long): Iterator[Document] = {
@@ -161,3 +162,4 @@ object LoadWikipediaPlainText extends LoadWikipediaPlainText {
     }
   }
 }
+*/

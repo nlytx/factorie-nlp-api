@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.load
 
 import java.io._
@@ -25,7 +26,7 @@ import cc.factorie.util.{DefaultCmdOptions, NonValidatingXML}
 import scala.io.Source
 import scala.util.matching.Regex
 import scala.xml.Node
-
+*/
 /**
  * Takes a document and an apf.xml file that contains coreference annotation for that
  * document and annotates that document.
@@ -35,6 +36,7 @@ import scala.xml.Node
  *
  * @author John Sullivan
  */
+/*
 class LoadAPFCoref(mentions:Seq[SerializableAPFMention], loadAsTarget:Boolean) extends DocumentAnnotator {
 
   def this(apfFile:File, loadAsTarget:Boolean = true) = this({
@@ -319,3 +321,4 @@ object LoadAPFCoref {
 
   }
 }
+*/

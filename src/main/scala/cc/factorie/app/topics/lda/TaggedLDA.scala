@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.topics.lda
 import cc.factorie.directed._
 import cc.factorie.variable.{CategoricalSeqDomain, MassesVariable}
@@ -82,3 +83,4 @@ object TaggedLDA {
     println("Finished in " + ((System.currentTimeMillis - startTime) / 1000.0) + " seconds")
   }
 }
+*/

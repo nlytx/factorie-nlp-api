@@ -327,7 +327,7 @@ class ChainNerOpts extends cc.factorie.util.CmdOptions with SharedNLPCmdOptions 
   val lang =      new CmdOption("language", "en", "STRING", "Lexicons language.")
 }
 
-
+/*
 object ConllChainNerTrainer extends cc.factorie.util.HyperparameterMain {
   def evaluateParameters(args:Array[String]): Double = {
     val opts = new ChainNerOpts
@@ -369,8 +369,8 @@ object ConllChainNerTrainer extends cc.factorie.util.HyperparameterMain {
     if(opts.targetAccuracy.wasInvoked) cc.factorie.assertMinimalAccuracy(ret,opts.targetAccuracy.value.toDouble)
     ret
   }
-}
-
+} */
+/*
 object ConllNerOptimizer {
   def main(args: Array[String]) {
     val opts = new ChainNerOpts
@@ -393,3 +393,4 @@ object ConllNerOptimizer {
     println("Done.")
   }
 }
+*/

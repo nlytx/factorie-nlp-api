@@ -10,12 +10,13 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-package cc.factorie.app.nlp.embedding
+/* package cc.factorie.app.nlp.embedding
 import cc.factorie.la._
 import cc.factorie.maths
 
 import scala.collection.mutable.LinkedHashMap
-
+*/
+/*
 object Browse {
   
   // t1 is the anchor (with some zero dimensions ignored), t2 is the data (which may have fewer zeros)
@@ -31,6 +32,7 @@ object Browse {
     val f2 = t2.map(x => if (math.abs(x) < zeroThreshold) 0.0 else x)
     new DenseTensor1(f1) cosineSimilarity new DenseTensor1(f2)
   }
+
   def main(args:Array[String]): Unit = {
     val embeddings = new LinkedHashMap[String,DenseTensor1]
     println("Reading embeddings...")
@@ -109,3 +111,4 @@ object Browse {
     }
   }
 }
+*/

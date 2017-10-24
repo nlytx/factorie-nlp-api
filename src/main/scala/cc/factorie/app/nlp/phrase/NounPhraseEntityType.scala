@@ -168,6 +168,7 @@ class OntonotesPhraseEntityTypeLabeler extends DocumentAnnotator {
 
 object NounPhraseEntityTypeLabeler extends OntonotesPhraseEntityTypeLabeler(ClasspathURL[OntonotesPhraseEntityTypeLabeler](".factorie").openConnection().getInputStream)
 
+/*
 object NounPhraseEntityTypeLabelerTrainer {
   def main(args:Array[String]): Unit = {
     if (args.length == 0) println("usage: trainfile [modelfile]")
@@ -186,4 +187,5 @@ object NounPhraseEntityTypeLabelerTrainer {
     if (args.length > 1) labeler.serialize(args(1))
   }
 }
+*/
 

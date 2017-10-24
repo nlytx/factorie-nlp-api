@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.embedding
 import java.io._
 
@@ -141,6 +142,7 @@ class WsabieCBOWExample(val model:CBOW, val targetId:Int, val inputIndices:Array
 class CBOW(override val opts:CBOWOptions) extends WordEmbedder(opts) {
   def newExample(model:WordEmbedder, wordIndices:Array[Int], centerPosition:Int, window:Int): Option[CBOWExample] = CBOWExample(model.asInstanceOf[CBOW], wordIndices, centerPosition, window)
 }
+*/
 
 
 /** A command-line interface to CBOW word embedding training and browsing.
@@ -171,6 +173,7 @@ class CBOW(override val opts:CBOWOptions) extends WordEmbedder(opts) {
     After training, write the vocabulary to the file "vocabulary.txt".
   
   */
+/*
 object CBOW {
 
   def main(args:Array[String]): Unit = {
@@ -194,3 +197,4 @@ object CBOW {
   
 }
   
+*/

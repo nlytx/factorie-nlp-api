@@ -10,14 +10,14 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-package cc.factorie.app.strings
+//package cc.factorie.app.strings
 
 /**
  * Rewritten from http://tartarus.org/martin/PorterStemmer/scala.txt
  * for thread-safety and style (but definitely not too pretty yet).
  * @author Brian Martin
  */
-
+/*
 object PorterStemmer {
   val vowels = "aeiou"
   val step1aVals = List(("sses", "ss"), ("ies","i"), ("ss","ss"), ("s", ""))
@@ -160,3 +160,4 @@ object PorterStemmer {
     stemmed.zip(trueStemmed).take(20).foreach(s => println("sample: " + s._1 + " " + s._2))
   }
 }
+*/

@@ -25,7 +25,7 @@ class DeterministicSentenceSegmenter extends DocumentAnnotator {
   /** If true, every newline causes a sentence break. */
   var newlineBoundary = false
 
-  /** If true,, every double newline causes a sentence break. */
+  /** If true every double newline causes a sentence break. */
   var doubleNewlineBoundary = true
 
   /** Matches the Token.string of punctuation that always indicates the end of a sentence.  It does not include possible additional tokens that may be appended to the sentence such as quotes and closing parentheses. */
@@ -41,7 +41,7 @@ class DeterministicSentenceSegmenter extends DocumentAnnotator {
   /** Whitespace that should not be allowed between a closingRegex and closingContinuationRegex for a sentence continuation.  For example:  He ran.  "You shouldn't run!" */
   val spaceRegex = "[ \n\r\t\u00A0\\p{Z}]+".r
   
-  val emoticonRegex = ("\\A("+DeterministicRegexTokenizer.emoticon+")\\Z").r
+  //val emoticonRegex = ("\\A("+DeterministicRegexTokenizer.emoticon+")\\Z").r
   
   /** If there are more than this number of characters between the end of the previous token and the beginning of this one, force a sentence start.
       If negative, don't break sentences according to this criteria at all. */
@@ -77,10 +77,10 @@ class DeterministicSentenceSegmenter extends DocumentAnnotator {
           newSentence(i)
         }
         // Emoticons are single-token sentences
-        else if (emoticonRegex.findFirstMatchIn(string) != None) {
-          if (i > 0) newSentence(i)
-          newSentence(i+1)
-        }
+//        else if (emoticonRegex.findFirstMatchIn(string) != None) {
+//          if (i > 0) newSentence(i)
+//          newSentence(i+1)
+//        }
         // Sentence boundary from sentence-terminating punctuation
         else if (closingRegex.findFirstMatchIn(string) != None) {
           //println("SentenceSegmenter1 i="+i+" starting end with "+string)
@@ -122,6 +122,7 @@ class DeterministicSentenceSegmenter extends DocumentAnnotator {
 }
 
 object DeterministicSentenceSegmenter extends DeterministicSentenceSegmenter {
+  /*
   def main(args: Array[String]): Unit = {
     for (filename <- args) yield {
       val doc = new Document(io.Source.fromFile(filename).mkString).setName(filename)
@@ -132,5 +133,5 @@ object DeterministicSentenceSegmenter extends DeterministicSentenceSegmenter {
         print("\n\n" + sentence.tokens.map(_.string).mkString(" | "))
       print("\n\n\n")
     }
-  }
+  } */
 }

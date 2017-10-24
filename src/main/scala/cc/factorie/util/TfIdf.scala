@@ -146,7 +146,7 @@ trait InverseFreqSmoothIdf extends InverseFreqLaplaceIdf {
   this: TfIdf =>
   val lambda = 1.0
 }
-
+/*
 object TfIdfTest {
   def main(args:Array[String]) {
 
@@ -180,3 +180,4 @@ I give the glory to my God,
 
   }
 }
+*/

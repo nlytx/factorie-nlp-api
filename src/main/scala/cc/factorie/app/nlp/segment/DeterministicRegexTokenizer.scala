@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+
 package cc.factorie.app.nlp.segment
 
 import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
@@ -20,6 +21,7 @@ import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
     (Although our the DeterministicSentenceSegmenter does make a few adjustments beyond this tokenizer.)
     @author Andrew McCallum
     */
+
 class DeterministicRegexTokenizer(caseSensitive:Boolean = false, tokenizeSgml:Boolean = false, tokenizeNewline:Boolean = false, tokenizeAllDashedWords:Boolean = false, abbrevPrecedesLowercase:Boolean = false) extends DocumentAnnotator {
 
   /** How the annotation of this DocumentAnnotator should be printed in one-word-per-line (OWPL) format.
@@ -150,10 +152,12 @@ class DeterministicRegexTokenizer(caseSensitive:Boolean = false, tokenizeSgml:Bo
 }
 
 object DeterministicRegexTokenizer extends DeterministicRegexTokenizer(false, false, false, false, false) {
+    /*
   def main(args: Array[String]): Unit = {
     val string = io.Source.fromInputStream(System.in).mkString
     val doc = new Document(string)
     DeterministicRegexTokenizer.process(doc)
     println(doc.tokens.map(_.string).mkString("\n"))
   }
+  */
 }

@@ -903,7 +903,7 @@ class TransitionBasedParserArgs extends cc.factorie.util.DefaultCmdOptions with 
   val hingeLoss = new CmdOption("hinge", true, "BOOLEAN", "Whether to use hinge or log loss")
   val debug = new CmdOption("debug", false, "BOOLEAN", "Whether to print out debugging info for training (generated features)")
 }
-
+/*
 object TransitionBasedParserTrainer extends cc.factorie.util.HyperparameterMain {
   def evaluateParameters(args: Array[String]) = {
     val opts = new TransitionBasedParserArgs
@@ -958,7 +958,8 @@ object TransitionBasedParserTrainer extends cc.factorie.util.HyperparameterMain 
     testLAS
   }
 }
-
+*/
+/*
 object TransitionBasedParserTester {
   def main(args: Array[String]) {
     val opts = new TransitionBasedParserArgs
@@ -994,7 +995,9 @@ object TransitionBasedParserTester {
     println(parser.testString(testSentences))
   }
 }
+*/
 
+/*
 object TransitionBasedParserOptimizer {
   def main(args: Array[String]) {
     val opts = new TransitionBasedParserArgs
@@ -1031,3 +1034,4 @@ object TransitionBasedParserOptimizer {
     println("Done")
   }
 }
+*/

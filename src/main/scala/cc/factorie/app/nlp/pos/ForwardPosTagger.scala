@@ -448,6 +448,7 @@ class ForwardPosOptions extends cc.factorie.util.DefaultCmdOptions with SharedNL
   val owpl = new CmdOption("owpl", false, "BOOL", "Whether the data is in OWPL format or otherwise (Ontonotes)")
 }
 
+/*
 object ForwardPosTester {
   def main(args: Array[String]) {
 	val opts = new ForwardPosOptions
@@ -482,7 +483,8 @@ object ForwardPosTester {
     pos.test(testSentences)
   }
 }
-
+*/
+/*
 object ForwardPosTrainer extends HyperparameterMain {
   def evaluateParameters(args: Array[String]): Double = {
     implicit val random = new scala.util.Random(0)
@@ -543,7 +545,8 @@ object ForwardPosTrainer extends HyperparameterMain {
     acc
   }
 }
-
+*/
+/*
 object ForwardPosOptimizer {
   def main(args: Array[String]) {
     val opts = new ForwardPosOptions
@@ -576,4 +579,4 @@ object ForwardPosOptimizer {
     println("Done")
   }
 }
-
+*/

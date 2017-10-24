@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.load
 
 import cc.factorie.app.nlp._
@@ -19,7 +20,7 @@ import cc.factorie.app.nlp.parse.ParseTree
 import cc.factorie.app.nlp.pos.LabeledPennPosTag
 
 import scala.io.Source
-
+*/
 /* Loader for the OntoNotes 5 data
    @author Brian Martin, Andrew McCallum
   1   token ID
@@ -40,7 +41,7 @@ import scala.io.Source
   16  gold coreference
 
  */
-
+/*
 sealed trait AnnotationType
 case object DoNotLoad extends AnnotationType
 case object GoldLabel extends AnnotationType
@@ -157,3 +158,4 @@ object LoadOntonotes5 extends Load {
     for (filename <- args)
       printDocument(fromFilename(filename).head)
 }
+*/

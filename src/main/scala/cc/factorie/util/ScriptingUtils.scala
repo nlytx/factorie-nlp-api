@@ -21,16 +21,17 @@ object ScriptingUtils {
     val script = imports.map("import " + _).mkString("\n") + "\n{\n" + code + "\n}"
     tb.eval(tb.parse(script)).asInstanceOf[T]
   }
-  def main(args: Array[String]): Unit = {
-    val res = eval[String](
-      """
-val tmp = "asd" + "foo"
-tmp + "!"
-      """)
-    println(res)
-    val res2 = eval[cc.factorie.optimize.GradientOptimizer]("import cc.factorie.optimize._; new AdaGrad(rate = 0.1)")
-    println(res2)
-    val res3 = eval[cc.factorie.optimize.GradientOptimizer]("new AdaGrad(rate = 0.1)", Seq("cc.factorie.optimize._"))
-    println(res3)
-  }
+
+//  def main(args: Array[String]): Unit = {
+//    val res = eval[String](
+//      """
+//val tmp = "asd" + "foo"
+//tmp + "!"
+//      """)
+//    println(res)
+//    val res2 = eval[cc.factorie.optimize.GradientOptimizer]("import cc.factorie.optimize._; new AdaGrad(rate = 0.1)")
+//    println(res2)
+//    val res3 = eval[cc.factorie.optimize.GradientOptimizer]("new AdaGrad(rate = 0.1)", Seq("cc.factorie.optimize._"))
+//    println(res3)
+//  }
 }

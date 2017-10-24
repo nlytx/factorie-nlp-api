@@ -10,6 +10,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+/*
 package cc.factorie.app.nlp.pos
 
 import java.io._
@@ -18,11 +19,11 @@ import java.util.{HashMap, HashSet}
 import cc.factorie.app.chain.Observations._
 import cc.factorie.app.nlp.{Document, Sentence, Token}
 import cc.factorie.util.{BinarySerializer, ClasspathURL}
-
+*/
 /**
  * Created by Oskar Singer on 10/6/14.
  */
-
+/*
 class CtbChainPosTagger extends ChainPosTagger((t:Token) => new CtbPosTag(t, 0)) {
 
   private var prefixMap = new HashMap[Char, HashSet[String]]
@@ -211,3 +212,4 @@ object CtbChainPosTrainer extends ChainPosTrainer[CtbPosTag, CtbChainPosTagger](
     documents
   }
 )
+*/

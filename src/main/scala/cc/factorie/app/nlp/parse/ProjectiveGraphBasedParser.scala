@@ -348,7 +348,7 @@ object ProjectiveGraphBasedParserOpts extends cc.factorie.util.DefaultCmdOptions
   val model      = new CmdOption("model", "parser-model", "FILE", "File in which to save the trained model.")
   val nThreads   = new CmdOption("nThreads", Runtime.getRuntime.availableProcessors(), "INT", "Number of threads to use.")
 }
-
+/*
 object ProjectiveGraphBasedParserTrainer extends HyperparameterMain {
   def evaluateParameters(args: Array[String]): Double = {
     val opts = ProjectiveGraphBasedParserOpts
@@ -417,3 +417,4 @@ object ProjectiveGraphBasedParserTrainer extends HyperparameterMain {
   }
 
 }
+*/

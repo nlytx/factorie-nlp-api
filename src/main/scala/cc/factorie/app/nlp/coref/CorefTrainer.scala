@@ -1,3 +1,4 @@
+
 /* Copyright (C) 2008-2016 University of Massachusetts Amherst.
    This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
    http://factorie.cs.umass.edu, http://github.com/factorie
@@ -10,6 +11,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
+
 package cc.factorie.app.nlp.coref
 
 import cc.factorie.app.nlp.lexicon.{LexiconsProvider, StaticLexicons}
@@ -44,7 +46,7 @@ trait ForwardCorefTrainerOpts extends CorefTrainerOpts{
   val deserialize = new CmdOption("deserialize", "", "FILE", "Filename from which to deserialize classifier.")
   val useAverageIterate = new CmdOption("use-average-iterate", true, "BOOLEAN", "Use the average iterate instead of the last iterate?")
 }
-
+/*
 object ForwardCorefTrainer extends CorefTrainer{
   object opts extends ForwardCorefTrainerOpts
 
@@ -190,7 +192,7 @@ object StructuredCorefTrainer extends CorefTrainer{
     accuracy
   }
 }
-
+*/
 trait CorefTrainerOpts extends cc.factorie.util.DefaultCmdOptions with cc.factorie.app.nlp.SharedNLPCmdOptions{
   val trainFile = new CmdOption("train", "src/main/resources/conll-train-clean.txt", "STRING", "File with training data")
   val testFile = new CmdOption("test", "src/main/resources/conll-test-clean.txt", "STRING", "File with testing data")
@@ -203,6 +205,7 @@ trait CorefTrainerOpts extends cc.factorie.util.DefaultCmdOptions with cc.factor
   val writeConllFormat = new CmdOption("write-conll-format", true, "BOOLEAN", "Write CoNLL format data.")
 }
 /** Classes shared by both coref systems*/
+/*
 abstract class CorefTrainer extends HyperparameterMain with Trackable{
   def evaluateParameters(args: Array[String]): Double
 
@@ -294,6 +297,7 @@ abstract class CorefTrainer extends HyperparameterMain with Trackable{
   }
 
 }
+*/
 /*
 object StructuredCorefOptimizer{
   def main(args: Array[String]) {
