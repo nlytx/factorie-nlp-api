@@ -6,7 +6,7 @@ import cc.factorie.app.nlp.{DocumentAnnotatorPipeline, parse, pos, ner}
   * Created by andrew@andrewresearch.net on 24/10/17.
   */
 object DocumentAnnotator {
-  val default = DocumentAnnotatorPipeline(pos.OntonotesForwardPosTagger, parse.WSJTransitionBasedParser,ner.OntonotesChainNer)
+  val default = DocumentAnnotatorPipeline(pos.OntonotesForwardPosTagger, parse.WSJTransitionBasedParser)
 
   //lemma.WordNetLemmatizer
   //coref.NerStructuredCoref
