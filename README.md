@@ -2,7 +2,7 @@
 
 # factorie-nlp-api
 
-This is a modified version of [https://github.com/factorie/factorie](https://github.com/factorie/factorie) focused on the NLP features via the API. It is opinionated and therefore does not include all of the NLP options contained in the original Factorie code base.
+This is a modified version of [https://github.com/factorie/factorie](https://github.com/factorie/factorie) focused on the NLP features via the API. It is opinionated and therefore does not include all of the NLP options contained in the original Factorie code base. In particular, the code for training new models and testing of models has been removed with the objective that this API be focused on delivering NLP services based on existing modles. Therefore, it's anticipated that model training and testing might be provided via a separate API, or with the original Factorie code.
 
 It is also stripped all of the command line code, code for accessing MongoDB, and the docs and examples associated with the general (non NLP) use of Factorie.
 
