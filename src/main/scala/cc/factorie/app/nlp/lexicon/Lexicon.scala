@@ -19,8 +19,9 @@ import cc.factorie.app.strings.StringSegmenter
 import cc.factorie.variable.CategoricalVectorVar
 
 import scala.collection.mutable.{ArrayBuffer, HashMap}
-import scala.io.Source
-import java.io.{InputStream, File}
+import scala.io.{Codec, Source}
+import java.io.{File, InputStream}
+
 import cc.factorie.app.chain.Observation
 
 /** The general interface to a lexicon.  Both WordLexicon and PhraseLexicon are subclasses.
@@ -66,7 +67,7 @@ trait MutableLexicon extends Lexicon {
   /** All a lines from the input File to this lexicon.  File contains multiple newline-separated lexicon entries */
   def ++=(file:File, enc:String = "UTF-8"): this.type = ++=(Source.fromFile(file, enc))
   /** Add all lines from the InputStream to this lexicon */
-  def ++=(is:InputStream): this.type = this.++=(Source.fromInputStream(is)(io.Codec.UTF8))
+  def ++=(is:InputStream): this.type = this.++=(Source.fromInputStream(is)(Codec.UTF8))
 }
 
 /** Support for constructing Lexicons
@@ -81,7 +82,7 @@ object Lexicon {
   def fromFilename(filename:String, tokenizer:StringSegmenter = cc.factorie.app.strings.nonWhitespaceSegmenter, lemmatizer:Lemmatizer = LowercaseLemmatizer): Lexicon =
     fromSource(filename, Source.fromFile(new File(filename))(scala.io.Codec.UTF8))
   def fromResource(resourceFilename:String, tokenizer:StringSegmenter = cc.factorie.app.strings.nonWhitespaceSegmenter, lemmatizer:Lemmatizer = LowercaseLemmatizer): Lexicon =
-    fromSource(resourceFilename, io.Source.fromInputStream(getClass.getResourceAsStream(resourceFilename)))
+    fromSource(resourceFilename, Source.fromInputStream(getClass.getResourceAsStream(resourceFilename)))
 }
 
 /** A lexicon containing single words or multi-word phrases.

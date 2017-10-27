@@ -20,4 +20,5 @@ package object lexicon {
   val ssdi = ClasspathResourceLexicons.ssdi
   val mandarin = ClasspathResourceLexicons.mandarin
   */
+
 }
