@@ -1,22 +1,18 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
-
 package cc.factorie.app.nlp
-import cc.factorie.util.{Attr, Cubbie}
-import cc.factorie.variable.{CategoricalValue, ChainLink, StringVariable}
+
+import cc.factorie.app.nlp.lemma.TokenLemma
+import cc.factorie.app.nlp.ner.NerTag
+import cc.factorie.app.nlp.parse.{ParseTree, ParseTreeLabel}
+import cc.factorie.app.nlp.pos.PosTag
+import cc.factorie.util.Attr
+import cc.factorie.variable.{CategoricalValue, ChainLink}
 
 import scala.collection.mutable
-import cc.factorie.app.nlp.ner.BioConllNerTag
+
+/**
+  * Created by andrew@andrewresearch.net on 27/10/17.
+  */
+
 
 // There are two ways to create Tokens and add them to Sentences and/or Documents:
 // Without String arguments, in which case the string is assumed to already be in the Document
@@ -28,19 +24,19 @@ import cc.factorie.app.nlp.ner.BioConllNerTag
     Token constructors that include a Sentence automatically add the Token to the Sentence and its Section.
     Token constructors that include a tokenString automatically append the tokenString to the Document's string.
     @param stringStart The offset into the Document string of the first character of the Token.
-    @param stringEnd The offset into the Document string of the character immediately after the last character of the Token. */
+@param stringEnd The offset into the Document string of the character immediately after the last character of the Token. */
 class Token(val stringStart:Int, val stringEnd:Int)
   extends cc.factorie.app.chain.Observation[Token] with ChainLink[Token,Section] with DocumentSubstring with Attr with Serializable {
   assert(stringStart <= stringEnd)
-//  override def _setChainPosition(c:Section, p:Int): Unit = {
-//    super._setChainPosition(c, p)
-//    assert(stringStart < section.stringEnd && stringStart >= section.stringStart && stringEnd <= section.stringEnd)
-//  }
+  //  override def _setChainPosition(c:Section, p:Int): Unit = {
+  //    super._setChainPosition(c, p)
+  //    assert(stringStart < section.stringEnd && stringStart >= section.stringStart && stringEnd <= section.stringEnd)
+  //  }
   /** Create a Token and also append it to the list of Tokens in the Section.
       There must not already be Tokens in the document with higher stringStart indices.
       Note that the start and end indices are character offsets into the Document string, not the Section string.
       @param stringStart The offset into the Document string of the first character of the Token.
-      @param stringEnd The offset into the Document string of the character immediately after the last character of the Token. */
+  @param stringEnd The offset into the Document string of the character immediately after the last character of the Token. */
   def this(sec:Section, stringStart:Int, stringEnd:Int) = {
     this(stringStart, stringEnd)
     assert(sec ne null)
@@ -73,7 +69,7 @@ class Token(val stringStart:Int, val stringEnd:Int)
   /** The Document containing this Token's Section. */
   def document: Document = chain.document
   /** Return the substring of the original Document string covered by the character indices stringStart to stringEnd.
-      This may be different than the String returned by this.string if the TokenString attribute has been set. 
+      This may be different than the String returned by this.string if the TokenString attribute has been set.
       (Such substitutions are useful for de-hyphenation, downcasing, and other such modifications. */
   def docSubstring = document.string.substring(stringStart, stringEnd)
   /** Return the string contents of this Token, either from its attr[TokenString] variable or, if unset, directly as a substring of the Document */
@@ -83,7 +79,7 @@ class Token(val stringStart:Int, val stringEnd:Int)
   /** Return the string contents of this Token, either from its specified attr[C], or if unset, directly as a substring of the Document. */
   def normalizedString[C<:TokenString](attrClass:Class[C]): String = { val ts = attr(attrClass); if (ts ne null) ts.value else docSubstring }
   /** Return the lemma of the string contents of the Token, either from its attr[TokenLemma] variable or,if unset, from token.string.  */
-  def lemmaString: String = { val tl = attr[cc.factorie.app.nlp.lemma.TokenLemma]; if (tl ne null) tl.value else string }
+  def lemmaString: String = { val tl = attr[TokenLemma]; if (tl ne null) tl.value else string }
   /** Return the 0-start index of this token in its Section. */
   def positionInSection: Int = position
   // TODO The ClearSegmenter should set Token._sentence, so the "sentence" method doesn't have to search for it. -akm
@@ -111,21 +107,21 @@ class Token(val stringStart:Int, val stringEnd:Int)
   }
 
   // Common attributes, will return null if not present
-  def posTag = attr[cc.factorie.app.nlp.pos.PosTag]
-  def nerTag = attr[cc.factorie.app.nlp.ner.NerTag]
-  def lemma = attr[cc.factorie.app.nlp.lemma.TokenLemma]
+  def posTag = attr[PosTag]
+  def nerTag = attr[NerTag]
+  def lemma = attr[TokenLemma]
   // Parse attributes, will throw exception if parse is not present
-  def parse = sentence.attr[cc.factorie.app.nlp.parse.ParseTree]
-  def parseParent: Token = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].parent(positionInSentence)
-  def parseParentIndex: Int = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].parentIndex(positionInSentence)
-  def parseLabel: cc.factorie.app.nlp.parse.ParseTreeLabel = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].label(positionInSentence)
-  def parseChildren: Seq[Token] = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].children(positionInSentence)
-  def parseLeftChildren: Seq[Token] = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].leftChildren(positionInSentence)
-  def parseRightChildren: Seq[Token] = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].rightChildren(positionInSentence)
-  def parseChildrenLabeled(label:CategoricalValue[String]): Seq[Token] = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].childrenLabeled(positionInSentence, label.intValue)
-  def parseLeftChildrenLabeled(label:CategoricalValue[String]): Seq[Token] = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].leftChildrenLabeled(positionInSentence, label.intValue)
-  def parseRightChildrenLabeled(label:CategoricalValue[String]): Seq[Token] = sentence.attr[cc.factorie.app.nlp.parse.ParseTree].rightChildrenLabeled(positionInSentence, label.intValue)
-  
+  def parse = sentence.attr[ParseTree]
+  def parseParent: Token = sentence.attr[ParseTree].parent(positionInSentence)
+  def parseParentIndex: Int = sentence.attr[ParseTree].parentIndex(positionInSentence)
+  def parseLabel: ParseTreeLabel = sentence.attr[ParseTree].label(positionInSentence)
+  def parseChildren: Seq[Token] = sentence.attr[ParseTree].children(positionInSentence)
+  def parseLeftChildren: Seq[Token] = sentence.attr[ParseTree].leftChildren(positionInSentence)
+  def parseRightChildren: Seq[Token] = sentence.attr[ParseTree].rightChildren(positionInSentence)
+  def parseChildrenLabeled(label:CategoricalValue[String]): Seq[Token] = sentence.attr[ParseTree].childrenLabeled(positionInSentence, label.intValue)
+  def parseLeftChildrenLabeled(label:CategoricalValue[String]): Seq[Token] = sentence.attr[ParseTree].leftChildrenLabeled(positionInSentence, label.intValue)
+  def parseRightChildrenLabeled(label:CategoricalValue[String]): Seq[Token] = sentence.attr[ParseTree].rightChildrenLabeled(positionInSentence, label.intValue)
+
   // Sentence methods
   private[nlp] var _sentence: Sentence = null // This must be changeable from outside because sometimes Tokenization comes before Sentence segmentation
   def sentence: Sentence = {
@@ -139,19 +135,19 @@ class Token(val stringStart:Int, val stringEnd:Int)
   def isInSentence: Boolean = sentence ne null
   def isSentenceStart: Boolean = (sentence ne null) && sentence.start == position
   def isSentenceEnd: Boolean = (sentence ne null) && sentence.end-1 == position
-  
+
   // Span methods.  Don't delete these yet.  Still small chance may have a canonical "SpanList" in Section.
-//  def inSpan: Boolean = chain.hasSpanContaining(position) 
-//  def inSpanOfClass[A<:TokenSpan](c:Class[A]): Boolean = chain.hasSpanOfClassContaining(c, position)
-//  def inSpanOfClass[A<:TokenSpan:ClassTag]: Boolean = chain.hasSpanOfClassContaining(m.erasure.asInstanceOf[Class[A]], position)
-//  def spans:Seq[TokenSpan] = chain.spansContaining(position) //.toList
-//  def spansOfClass[A<:TokenSpan](c:Class[A]) = chain.spansOfClassContaining(c, position)
-//  def spansOfClass[A<:TokenSpan:ClassTag] = chain.spansOfClassContaining(m.erasure.asInstanceOf[Class[A]], position)
-//  def startsSpans: Iterable[TokenSpan] = chain.spansStartingAt(position)
-//  def startsSpansOfClass[A<:TokenSpan:ClassTag]: Iterable[A] = chain.spansOfClassStartingAt(position)
-//  def endsSpans: Iterable[TokenSpan] = chain.spansEndingAt(position)
-//  def endsSpansOfClass[A<:TokenSpan:ClassTag]: Iterable[A] = chain.spansOfClassEndingAt(position)
-  
+  //  def inSpan: Boolean = chain.hasSpanContaining(position)
+  //  def inSpanOfClass[A<:TokenSpan](c:Class[A]): Boolean = chain.hasSpanOfClassContaining(c, position)
+  //  def inSpanOfClass[A<:TokenSpan:ClassTag]: Boolean = chain.hasSpanOfClassContaining(m.erasure.asInstanceOf[Class[A]], position)
+  //  def spans:Seq[TokenSpan] = chain.spansContaining(position) //.toList
+  //  def spansOfClass[A<:TokenSpan](c:Class[A]) = chain.spansOfClassContaining(c, position)
+  //  def spansOfClass[A<:TokenSpan:ClassTag] = chain.spansOfClassContaining(m.erasure.asInstanceOf[Class[A]], position)
+  //  def startsSpans: Iterable[TokenSpan] = chain.spansStartingAt(position)
+  //  def startsSpansOfClass[A<:TokenSpan:ClassTag]: Iterable[A] = chain.spansOfClassStartingAt(position)
+  //  def endsSpans: Iterable[TokenSpan] = chain.spansEndingAt(position)
+  //  def endsSpansOfClass[A<:TokenSpan:ClassTag]: Iterable[A] = chain.spansOfClassEndingAt(position)
+
   // String feature help:
   def matches(t2:Token): Boolean = string == t2.string // TODO Consider renaming "stringMatches"
   /** Return true if the first character of the word is upper case. */
@@ -166,7 +162,7 @@ class Token(val stringStart:Int, val stringEnd:Int)
   def isDigits: Boolean = string.matches("\\d+")
   /** Return true if the word contains at least one digit. */
   def containsDigit: Boolean = string.matches(".*\\d.*")
-  /** Return a string that captures the generic "shape" of the original word, 
+  /** Return a string that captures the generic "shape" of the original word,
       mapping lowercase alphabetics to 'a', uppercase to 'A', digits to '1', whitespace to ' '.
       Skip more than 'maxRepetitions' of the same character class. */
   def wordShape(maxRepetitions:Int = 2): String = cc.factorie.app.strings.stringShape(string, maxRepetitions)
@@ -184,70 +180,4 @@ class Token(val stringStart:Int, val stringEnd:Int)
       If instead you want the string contents of the token use the method "string". */
   override def toString = "Token("+stringStart+":"+string+")"
 
-}
-
-/** Used as an attribute of Token when the token.string should return something 
-    different than the document.string.substring at the Token's start and end positions. 
-    For example, de-hyphenation may change "probab\n-ly" to "probably". */
-class TokenString(val token:Token, s:String) extends StringVariable(s) 
-
-
-
-// Cubbie storage
-
-class TokenCubbie extends Cubbie {
-  val start = IntSlot("start")
-  val end = IntSlot("end")
-  def postFetchToken(t:Token): Unit = {}
-  def fetchToken: Token = {
-    val t = new Token(start.value, end.value)
-    postFetchToken(t)
-    t
-  }
-  def postStoreToken(t:Token): Unit = {}
-  def storeToken(t:Token): this.type = {
-    start := t.stringStart
-    end := t.stringEnd
-    postStoreToken(t)
-    this
-  }
-}
-
-trait TokenStringCubbieSlot extends TokenCubbie {
-  val string = StringSlot("string")
-  override def postStoreToken(t:Token): Unit = {
-    super.postStoreToken(t)
-    string := t.string	
-  }
-  // No postFetchToken necessary because "string" isn't needed for Token initialization
-}
-
-trait TokenBioConllNerTagCubbie extends TokenCubbie {
-  val ner = StringSlot("ner")
-  def newTokenNerLabel(t:Token, s:String): BioConllNerTag
-  override def storeToken(t:Token): this.type = {
-    super.storeToken(t)
-    ner := t.nerTag.categoryValue
-    this
-  }
-  override def fetchToken: Token = {
-    val t = super.fetchToken
-    t.attr += newTokenNerLabel(t, ner.value)
-    t
-  }
-}
-
-trait TokenPennPosTagCubbie extends TokenCubbie {
-  val pos = StringSlot("pos")
-  def newTokenPosLabel(t:Token, s:String): cc.factorie.app.nlp.pos.PennPosTag
-  override def storeToken(t:Token): this.type = {
-    super.storeToken(t)
-    pos:= t.posTag.categoryValue
-    this
-  }
-  override def fetchToken: Token = {
-    val t = super.fetchToken
-    t.attr += newTokenPosLabel(t, pos.value)
-    t
-  }
 }

@@ -1,19 +1,11 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
-
 package cc.factorie.app.nlp
 
+import cc.factorie.app.nlp.parse.ParseTree
 import cc.factorie.app.nlp.pos.PennPosTag
+
+/**
+  * Created by andrew@andrewresearch.net on 27/10/17.
+  */
 
 /** A span of Tokens making up a sentence within a Section of a Document.
     A Sentence is a special case of a TokenSpan, stored in its Section, and available through the Section.sentences method.
@@ -34,7 +26,7 @@ class Sentence(sec:Section, initialStart:Int, initialLength:Int)
 
   // Initialization
   // removed for efficiency -- shouldn't we do this in the annotators / loaders ?
-//  if (!sec.document.annotators.contains(classOf[Sentence])) sec.document.annotators(classOf[Sentence]) = UnknownDocumentAnnotator.getClass
+  //  if (!sec.document.annotators.contains(classOf[Sentence])) sec.document.annotators(classOf[Sentence]) = UnknownDocumentAnnotator.getClass
   sec.addSentence(this)
   private val _indexInSection: Int = sec.sentences.length - 1
 
@@ -42,48 +34,17 @@ class Sentence(sec:Section, initialStart:Int, initialLength:Int)
   def indexInSection: Int = _indexInSection
 
   /** Returns true if the given Token is inside this Sentence. */
-  def contains(element:Token) = tokens.contains(element) // TODO Re-implement this to be faster avoiding search using token.stringStart bounds 
+  def contains(element:Token) = tokens.contains(element) // TODO Re-implement this to be faster avoiding search using token.stringStart bounds
 
   // Parse attributes
   /** If this Sentence has a ParseTree, return it; otherwise return null. */
-  def parse = attr[cc.factorie.app.nlp.parse.ParseTree]
+  def parse = attr[ParseTree]
   /** Return the Token at the root of this Sentence's ParseTree. Will throw an exception if there is no ParseTree. */
-  def parseRootChild: Token = attr[cc.factorie.app.nlp.parse.ParseTree].rootChild
+  def parseRootChild: Token = attr[ParseTree].rootChild
 
   // common labels
   /** Returns the sequence of PennPosTags attributed to the sequence of Tokens in this Sentence. */
-  def posTags: IndexedSeq[pos.PennPosTag] = tokens.map(_.attr[PennPosTag])
+  def posTags: IndexedSeq[cc.factorie.app.nlp.pos.PennPosTag] = tokens.map(_.attr[PennPosTag])
   /** Returns the sequence of NerTags attributed to the sequence of Tokens in this Sentence. */
-  def nerTags: IndexedSeq[ner.NerTag] = tokens.map(_.nerTag)
-}
-
-
-// Cubbie storage
-
-class SentenceCubbie extends TokenSpanCubbie {
-  def finishStoreSentence(s:Sentence): Unit = {}
-  def storeSentence(s:Sentence): this.type = {
-	storeTokenSpan(s) // also calls finishStoreTokenSpan(s)
-    finishStoreSentence(s)
-    this
-  }
-  def finishFetchSentence(s:Sentence): Unit = finishFetchTokenSpan(s)
-  def fetchSentence(section:Section): Sentence = {
-    val s = new Sentence(section, start.value, length.value)
-    finishFetchSentence(s)
-    s
-  }
-}
-
-// To save the sentence with its parse tree use "new SentenceCubbie with SentenceParseTreeCubbie"
-trait SentenceParseCubbie extends SentenceCubbie {
-  val parse = CubbieSlot("parse", () => new cc.factorie.app.nlp.parse.ParseTreeCubbie)
-  override def finishStoreSentence(s:Sentence): Unit = {
-    super.finishStoreSentence(s)
-    parse := parse.constructor().storeParseTree(s.parse)
-  }
-  override def finishFetchSentence(s:Sentence): Unit = {
-    super.finishFetchSentence(s)
-    s.attr += parse.value.fetchParseTree(s)
-  }
+  def nerTags: IndexedSeq[cc.factorie.app.nlp.ner.NerTag] = tokens.map(_.nerTag)
 }

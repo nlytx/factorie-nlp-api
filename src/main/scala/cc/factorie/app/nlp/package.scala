@@ -63,13 +63,13 @@ package object nlp {
   def bioBoundaries(labels:Seq[String]): Seq[(Int,Int,String)] = iobBoundaries(labels)
 
 
-  /** Command-line options available on all NLP model trainers.
-      @author David Belanger */
-  trait SharedNLPCmdOptions extends cc.factorie.util.CmdOptions  {
-    val targetAccuracy = new CmdOption("target-accuracy", "", "FLOAT", "target accuracy for this NLP model. It will throw an exception if you don't hit this")
-    val trainPortion = new CmdOption("train-portion", 1.0, "FLOAT", "portion of train to load")
-    val testPortion = new CmdOption("test-portion", 1.0, "FLOAT", "portion of test to load")
-  
-  }
+//  /** Command-line options available on all NLP model trainers.
+//      @author David Belanger */
+//  trait SharedNLPCmdOptions extends cc.factorie.util.CmdOptions  {
+//    val targetAccuracy = new CmdOption("target-accuracy", "", "FLOAT", "target accuracy for this NLP model. It will throw an exception if you don't hit this")
+//    val trainPortion = new CmdOption("train-portion", 1.0, "FLOAT", "portion of train to load")
+//    val testPortion = new CmdOption("test-portion", 1.0, "FLOAT", "portion of test to load")
+//
+//  }
 
 }

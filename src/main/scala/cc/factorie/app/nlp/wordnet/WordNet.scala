@@ -13,10 +13,10 @@
 
 package cc.factorie.app.nlp.wordnet
 
+import cc.factorie.app.nlp.lemma.WordNetLemmatizer
 import cc.factorie.util.ClasspathURL
 
 import scala.collection.immutable.HashMap
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
@@ -41,7 +41,7 @@ class WordNet(val inputStreamFactory: String=>java.io.InputStream) {
    * all of the data and index files and extracts information from them
    * To speed this up, we can combine the wnLemmatizer intialization and the
    * WordNet intialization used below */
-  val wnLemmatizer = new cc.factorie.app.nlp.lemma.WordNetLemmatizer(inputStreamFactory)
+  val wnLemmatizer = new WordNetLemmatizer(inputStreamFactory)
 
   /* There are 2 types of files we deal with here for wordnet:
        1) the data file - this file has 1 line per synset and
@@ -190,25 +190,7 @@ class WordNet(val inputStreamFactory: String=>java.io.InputStream) {
 
 }
 
-class Synset(val id: String, val hyps: Set[String], val ants: Set[String], wn: WordNet) {
-  def antonyms(): Set[Synset] = this.ants.map(x => wn.allSynsets(x))
 
-  /* get the parent synsets (hypernyms) of this synset */
-  def hypernyms(): Set[Synset] = this.hyps.map(x => wn.allSynsets(x))
-
-  /* recursively get all parent synsets (hypernyms) of this synset */
-  def allHypernyms(): Set[Synset] = {
-    val result = mutable.Set[Synset]()
-    def visit(s: Synset) {
-      if (!result.contains(s)) {
-        result.add(s)
-        s.hypernyms().foreach(visit)
-      }
-    }
-    visit(this)
-    result.toSet
-  }
-}
 
 object WordNet extends WordNet(s => ClasspathURL.fromDirectory[WordNet](s).openConnection().getInputStream)
 

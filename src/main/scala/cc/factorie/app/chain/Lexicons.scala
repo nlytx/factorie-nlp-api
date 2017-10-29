@@ -12,14 +12,15 @@
    limitations under the License. */
 
 package cc.factorie.app.chain
+
 import cc.factorie.app.nlp.{Token, TokenSpan}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.io.BufferedSource
 
-/** Methods of retrieving the lexicons that a token in a document (using the window around the token) or a span matches into
-  * returns the lexicons names, and the location the token matches into the lexicon (like B-label, I-label, U-label, or L-label)
+/** Methods of retrieving the lexicon that a token in a document (using the window around the token) or a span matches into
+  * returns the lexicon names, and the location the token matches into the lexicon (like B-label, I-label, U-label, or L-label)
     @author anzaroot */
 class Lexicons( val sources : List[(String,BufferedSource)]) {
   val lexiconMap = mutable.HashMap[String, List[String]]()
@@ -50,7 +51,7 @@ class Lexicons( val sources : List[(String,BufferedSource)]) {
       val key = removeTrail(keyPre.map(_.string).mkString(" "))
       if(lexiconMap.contains(key) && (removeTrail(token.string) != "" || (keyPre.head.position < token.position && keyPre.last.position > token.position ))) {
         lexes = lexiconMap(key).map(locate(token, keyPre) + _) ::: lexes
-        //println("Found for token: " + token.string + " with key: " + keyPre + " the lexicons: " + lexiconMap(key).mkString(" , "))
+        //println("Found for token: " + token.string + " with key: " + keyPre + " the lexicon: " + lexiconMap(key).mkString(" , "))
         //println("And phrase: " + phrase.map( _.string ).mkString(" "))
       }
     }

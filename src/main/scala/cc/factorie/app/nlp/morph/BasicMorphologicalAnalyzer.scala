@@ -16,6 +16,8 @@ import cc.factorie.app.nlp.lexicon.Lexicon
 import cc.factorie.util.ClasspathURL
 
 import scala.collection.mutable
+import scala.io
+
 
 /** A simple morphological analyzer, simply indicating if a noun is singular or plural.
     Obviously this supports very limited functionality. More will be added as needed.

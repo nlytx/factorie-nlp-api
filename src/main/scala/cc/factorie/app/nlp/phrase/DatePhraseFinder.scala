@@ -12,20 +12,17 @@
    limitations under the License. */
 package cc.factorie.app.nlp.phrase
 
-import java.util.GregorianCalendar
-
 import cc.factorie._
-import cc.factorie.app.nlp._
 import cc.factorie.app.nlp.lemma.TokenLemma
 import cc.factorie.app.nlp.pos.PennPosTag
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.language.implicitConversions
 import scala.util.parsing.combinator.{ImplicitConversions, Parsers}
 import scala.util.parsing.input.{Position, Reader}
-import scala.language.implicitConversions
 
-/** A collection of Phrases that are noun phrases.  Typically used as an attribute of a Section or a Document. */
-class DatePhraseList(phrases: Iterable[DatePhrase]) extends PhraseList(phrases)
+
 
 /**
  * Finds and parses all kinds of dates in a document, Basic formats were taken from http://en.wikipedia.org/wiki/Calendar_date.
@@ -230,21 +227,4 @@ class DatePhraseFinder(usePosTag:Boolean) extends DocumentAnnotator with Parsers
   override def tokenAnnotationString(token: Token): String = token.document.attr[DatePhraseList].find(phrase => phrase.contains(token)).fold("")("Date: " + _.asInstanceOf[DatePhrase].toString())
 }
 
-class DatePhrase(startToken: Token, length: Int = 1, val day: Int = -1, val month: Int = -1, val year: Int = Int.MinValue, val weekDay: Int = -1)
-  extends Phrase(startToken.section, startToken.positionInSection, length, 0) {
 
-  def toJavaDate: java.util.Date = new GregorianCalendar(year, month, day).getTime
-
-  override def toString: String = {
-    var s = ""
-    if (weekDay >= 0) s += DatePhraseFinder.nrToWeekDay(weekDay) + ", "
-    if (day >= 0) s += day + " "
-    if (month >= 0) s += DatePhraseFinder.nrToMonth(month - 1) + " "
-    if (year >= 0) s += year
-    s.trim
-  }
-
-  def toLocatedDate = LocatedDate(toJavaDate, this.document.name, characterOffsets._1, characterOffsets._2)
-}
-
-case class LocatedDate(date:java.util.Date, docId:String, startOffset:Int, endOffset:Int)

@@ -11,23 +11,11 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 package cc.factorie.app.nlp.lexicon
-import cc.factorie.app.nlp.lemma._
+
+import cc.factorie.app.nlp.lemma.LowercaseLemmatizer
 import cc.factorie.app.strings._
 
-class CustomStopWords extends TriePhraseLexicon("CustomStopWords", nonWhitespaceClassesSegmenter, LowercaseLemmatizer) {
-  def this(filename: String) = {
-    this()
-    this ++= scala.io.Source.fromFile(filename)
-  }
-  def this(words: Seq[String]) = {
-    this()
-    words.foreach { w => this += w }
-  }
-}
 
-object CustomStopWords {
-  def apply(filename: String) = new CustomStopWords(filename)
-}
 
 object StopWords extends TriePhraseLexicon("StopWords", nonWhitespaceClassesSegmenter, LowercaseLemmatizer) {
   def addFromFilename(filename: String): Unit = {

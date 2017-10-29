@@ -16,10 +16,11 @@ package cc.factorie.app.nlp.segment
 import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
 
 /** Split a String into a sequence of Tokens.  Aims to adhere to tokenization rules used in Ontonotes and Penn Treebank.
-    Note that CoNLL tokenization would use tokenizeAllDashedWords=true.
-    Punctuation that ends a sentence should be placed alone in its own Token, hence this segmentation implicitly defines sentence segmentation also.
-    (Although our the DeterministicSentenceSegmenter does make a few adjustments beyond this tokenizer.)
-    @author Andrew McCallum
+    *Note that CoNLL tokenization would use tokenizeAllDashedWords=true.
+    *Punctuation that ends a sentence should be placed alone in its own Token, hence this segmentation implicitly defines sentence segmentation also.
+    *(Although our the DeterministicSentenceSegmenter does make a few adjustments beyond this tokenizer.)
+ *
+    *@author Andrew McCallum
     */
 
 class DeterministicRegexTokenizer(caseSensitive:Boolean = false, tokenizeSgml:Boolean = false, tokenizeNewline:Boolean = false, tokenizeAllDashedWords:Boolean = false, abbrevPrecedesLowercase:Boolean = false) extends DocumentAnnotator {

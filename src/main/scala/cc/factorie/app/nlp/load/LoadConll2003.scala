@@ -1,19 +1,8 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
-
 package cc.factorie.app.nlp.load
-import cc.factorie.app.nlp.{Document, Sentence, Token, UnknownDocumentAnnotator, _}
-import cc.factorie.app.nlp.ner._
+
+import cc.factorie.app.nlp.ner.LabeledBilouConllNerTag
+import cc.factorie.app.nlp.pos.PennPosTag
+import cc.factorie.app.nlp.{Document, Sentence, Token, UnknownDocumentAnnotator}
 import cc.factorie.util.FastLogging
 
 import scala.collection.mutable.ArrayBuffer
@@ -68,8 +57,8 @@ case class LoadConll2003(BILOU:Boolean = false, verbose:Boolean = false) extends
           document = new Document().setName("CoNLL2003-" + documents.length)
           document.annotators(classOf[Token]) = UnknownDocumentAnnotator.getClass // register that we have token boundaries
           document.annotators(classOf[Sentence]) = UnknownDocumentAnnotator.getClass // register that we have sentence boundaries
-          document.annotators(classOf[pos.PennPosTag]) = UnknownDocumentAnnotator.getClass // register that we have POS tags
-          document.annotators(classOf[LabeledBioConllNerTag]) = UnknownDocumentAnnotator.getClass // register that we have IOB NER tags
+          document.annotators(classOf[PennPosTag]) = UnknownDocumentAnnotator.getClass // register that we have POS tags
+          //document.annotators(classOf[LabeledBioConllNerTag]) = UnknownDocumentAnnotator.getClass // register that we have IOB NER tags
           if (BILOU) document.annotators(classOf[LabeledBilouConllNerTag]) = UnknownDocumentAnnotator.getClass // register that we have BILOU NER tags
           sentence = new Sentence(document)
         }
@@ -81,18 +70,18 @@ case class LoadConll2003(BILOU:Boolean = false, verbose:Boolean = false) extends
         val ner = fields(3).stripLineEnd
         if (sentence.length > 0) document.appendString(" ")
         val token = new Token(sentence, word)
-        val bioLabel = new LabeledBioConllNerTag(token, ner)
-        token.attr += bioLabel
+        //val bioLabel = new LabeledBioConllNerTag(token, ner)
+        //token.attr += bioLabel
 
-        token.attr += new cc.factorie.app.nlp.pos.PennPosTag(token, partOfSpeech)
+        token.attr += new PennPosTag(token, partOfSpeech)
       }
     }
     // Take care of last document that may have been accumulated
     if (document.tokenCount > 0){
-        if(document.sentences.last.isEmpty) document.asSection -= document.sentences.last
-        document.asSection.chainFreeze()
-        documents += document
-      }
+      if(document.sentences.last.isEmpty) document.asSection -= document.sentences.last
+      document.asSection.chainFreeze()
+      documents += document
+    }
     if (BILOU) convertToBILOU(documents)
     if (verbose) logger.info("Loaded "+documents.length+" documents with "+documents.map(_.sentences.size).sum+" sentences with "+documents.map(_.tokens.size).sum+" tokens total")
     documents
@@ -148,5 +137,3 @@ case class LoadConll2003(BILOU:Boolean = false, verbose:Boolean = false) extends
       Array("", "O")
   }
 }
-
-
