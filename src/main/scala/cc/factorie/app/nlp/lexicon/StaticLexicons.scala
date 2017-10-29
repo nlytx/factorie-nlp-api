@@ -1,123 +1,6 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
 package cc.factorie.app.nlp.lexicon
 
-import java.net.URL
-import java.nio.file.{Paths, Files, Path}
-
-import cc.factorie.app.nlp.lexicon.{iesl => Iesl, uscensus => Uscensus, wikipedia => Wikipedia, ssdi => Ssdi, mandarin => Mandarin}
-import cc.factorie.app.strings.StringSegmenter
-import cc.factorie.app.nlp.lemma.{Lemmatizer,LowercaseLemmatizer}
-import java.io.{InputStream, File}
-import cc.factorie.util.{ModelProvider, ClasspathURL}
-
-import scala.reflect.{ClassTag, classTag}
-import scala.language.implicitConversions
-import scala.util.Try
-
-trait LexiconsProvider {
-  def lexiconRoot:String
-  implicit def provide[L : ClassTag]:ModelProvider[L]
-}
-
-object LexiconsProvider {
-  import cc.factorie.util.ISAble._
-
-  private def lexiconNamePieces[L:ClassTag]:Seq[String] = {
-    val arr = classTag[L].runtimeClass.getName.split("""\.""").map(_.stripSuffix("$"))
-    val fileName = arr.last.zipWithIndex.flatMap {
-      case (u, 0) => u.toLower.toString
-      case (u, _) if u.isUpper => "-" + u.toLower
-      case (l, _) => l.toString
-    }.mkString("") + ".txt"
-    arr.init.map(_.toLowerCase) ++ Seq(fileName)
-  }
-
-  private def fullLexiconName[L:ClassTag] = lexiconNamePieces[L].mkString("/")
-  private def shortLexiconName[L:ClassTag] = lexiconNamePieces[L].drop(5).mkString("/")
-
-
-  def fromFile(f:File, useFullPath:Boolean = false):LexiconsProvider = new LexiconsProvider {
-    lazy val lexiconRoot = f.getAbsolutePath
-    override implicit def provide[L : ClassTag]: ModelProvider[L] = new ModelProvider[L] {
-      private val path = f.toPath.resolve(if(useFullPath) fullLexiconName[L] else shortLexiconName[L])
-      val coordinates = path.toString
-      val provide:InputStream = buffered(path)
-    }
-  }
-
-  def fromUrl(u:URL, useFullPath:Boolean = false):LexiconsProvider = new LexiconsProvider {
-    lazy val lexiconRoot = u.toString
-    implicit def provide[L:ClassTag]: ModelProvider[L] = new ModelProvider[L] {
-      private val modelUrl = new URL(u, if(useFullPath) fullLexiconName[L] else shortLexiconName[L])
-      val provide: InputStream = buffered(modelUrl)
-      val coordinates: String = modelUrl.toString
-    }
-  }
-
-  implicit def providePath(p:Path):LexiconsProvider = fromFile(p.toFile, false)
-  implicit def provideFile(f:File):LexiconsProvider = fromFile(f,false)
-  implicit def provideURL(u:URL):LexiconsProvider = fromUrl(u, false)
-
-  def fromString(s:String, useFullPath:Boolean=false):LexiconsProvider = s match {
-    case cp if cp.toLowerCase == "classpath" => classpath(useFullPath)
-    case urlS if Try(new URL(urlS)).isSuccess => fromUrl(new URL(urlS), useFullPath)
-    case p => fromFile(new File(p), useFullPath)
-  }
-
-  @deprecated("This exists to preserve legacy functionality", "10/27/15")
-  def classpath(useFullPath:Boolean=true):LexiconsProvider = new LexiconsProvider {
-    def lexiconRoot = "classpath"
-    implicit def provide[L: ClassTag]: ModelProvider[L] = new ModelProvider[L] {
-      private def url = if(useFullPath) ClasspathURL.fromDirectory[Lexicon](shortLexiconName[L]) else this.getClass.getResource("/" + shortLexiconName[L])
-      def coordinates: String = url.toString
-      def provide: InputStream = url
-    }
-  }
-
-  /*
-  @deprecated("This exists to preserve legacy functionality", "10/05/15")
-  def classpath:LexiconsProvider = new LexiconsProvider {
-    //lazy val lexiconRoot = ClasspathURL.fromDirectory[Lexicon]("")
-    lazy val lexiconRoot = Lexicon.getClass.getResource("")
-    implicit def provide[L : ClassTag]: ModelProvider[L] = new ModelProvider[L] {
-      private val url = {
-        println("root " + lexiconRoot)
-        println("shortname" + shortLexiconName[L])
-        new URL(lexiconRoot, shortLexiconName[L])
-      }
-      val coordinates: String = url.toString
-      val provide: InputStream = buffered(url)
-    }
-  }
-  */
-}
-
-
-
-trait ProvidedLexicon[L] {
-  this: MutableLexicon =>
-
-  def provider:ModelProvider[L]
-
-  synchronized {
-    this.++=(provider.provide)
-  }
-}
-
-class ProvidedTriePhraseLexicon[L]()(implicit val provider:ModelProvider[L], ct:ClassTag[L]) extends TriePhraseLexicon(ct.runtimeClass.getName) with ProvidedLexicon[L]
-
-class GenericLexicon(name:String, val provider:ModelProvider[GenericLexicon]) extends TriePhraseLexicon(name) with ProvidedLexicon[GenericLexicon]
+import cc.factorie.app.nlp.lexicon.{iesl => Iesl, ssdi => Ssdi, uscensus => Uscensus, wikipedia => Wikipedia}
 
 class StaticLexicons()(implicit lp:LexiconsProvider) {
 
@@ -126,42 +9,48 @@ class StaticLexicons()(implicit lp:LexiconsProvider) {
   object iesl {
 
     object Continents extends Iesl.Continents()(lp.provide[Iesl.Continents])
+
     object Country extends Iesl.Country()(lp.provide[Iesl.Country])
+
     object City extends Iesl.City()(lp.provide[Iesl.City])
+
     object UsState extends Iesl.UsState()(lp.provide[Iesl.UsState])
+
     object PlaceSuffix extends Iesl.PlaceSuffix()(lp.provide[Iesl.PlaceSuffix])
+
     object JobTitle extends Iesl.JobTitle()(lp.provide[Iesl.JobTitle])
+
     object Money extends Iesl.Money()(lp.provide[Iesl.Money])
+
     object Company extends Iesl.Company()(lp.provide[Iesl.Company])
+
     object OrgSuffix extends Iesl.OrgSuffix()(lp.provide[Iesl.OrgSuffix])
+
     object Month extends Iesl.Month()(lp.provide[Iesl.Month])
+
     object Day extends Iesl.Day()(lp.provide[Iesl.Day])
+
     object PersonHonorific extends Iesl.PersonHonorific()(lp.provide[Iesl.PersonHonorific])
+
     object PersonFirstHighest extends Iesl.PersonFirstHighest()(lp.provide[Iesl.PersonFirstHighest])
+
     object PersonFirstHigh extends Iesl.PersonFirstHigh()(lp.provide[Iesl.PersonFirstHigh])
+
     object PersonFirstMedium extends Iesl.PersonFirstMedium()(lp.provide[Iesl.PersonFirstMedium])
+
     object PersonLastHighest extends Iesl.PersonLastHighest()(lp.provide[Iesl.PersonLastHighest])
+
     object PersonLastHigh extends Iesl.PersonLastHigh()(lp.provide[Iesl.PersonLastHigh])
+
     object PersonLastMedium extends Iesl.PersonLastMedium()(lp.provide[Iesl.PersonLastMedium])
+
     object Say extends Iesl.Say()(lp.provide[Iesl.Say])
+
     object Demonym extends Iesl.Demonym()(lp.provide[Iesl.Demonym])
+
     object DemonymMap extends Iesl.DemonymMap()(lp.provide[Iesl.Demonym])
 
     object AllPlaces extends TrieUnionLexicon("places", Continents, Country, City, UsState)
-
-    object PersonFirst extends TrieUnionLexicon("person-first", PersonFirstHighest, PersonFirstHigh, PersonFirstMedium)
-
-    object PersonLast extends TrieUnionLexicon("person-last", PersonLastHighest, PersonLastHigh, PersonLastMedium)
-
-  }
-
-  object ssdi {
-    object PersonFirstHighest extends Ssdi.PersonFirstHighest()(lp.provide[Ssdi.PersonFirstHighest])
-    object PersonFirstHigh extends Ssdi.PersonFirstHigh()(lp.provide[Ssdi.PersonFirstHigh])
-    object PersonFirstMedium extends Ssdi.PersonFirstMedium()(lp.provide[Ssdi.PersonFirstMedium])
-    object PersonLastHighest extends Ssdi.PersonLastHighest()(lp.provide[Ssdi.PersonLastHighest])
-    object PersonLastHigh extends Ssdi.PersonLastHigh()(lp.provide[Ssdi.PersonLastHigh])
-    object PersonLastMedium extends Ssdi.PersonLastMedium()(lp.provide[Ssdi.PersonLastMedium])
 
     object PersonFirst extends TrieUnionLexicon("person-first", PersonFirstHighest, PersonFirstHigh, PersonFirstMedium)
 
@@ -225,45 +114,18 @@ class StaticLexicons()(implicit lp:LexiconsProvider) {
 
   }
 
-  object mandarin {
-    object SurnamePinyin extends Mandarin.SurnamePinyin()(lp.provide[Mandarin.SurnamePinyin])
-    object GivenNamePinyin extends Mandarin.GivenNamePinyin()(lp.provide[Mandarin.GivenNamePinyin])
+  object ssdi {
+    object PersonFirstHighest extends Ssdi.PersonFirstHighest()(lp.provide[Ssdi.PersonFirstHighest])
+    object PersonFirstHigh extends Ssdi.PersonFirstHigh()(lp.provide[Ssdi.PersonFirstHigh])
+    object PersonFirstMedium extends Ssdi.PersonFirstMedium()(lp.provide[Ssdi.PersonFirstMedium])
+    object PersonLastHighest extends Ssdi.PersonLastHighest()(lp.provide[Ssdi.PersonLastHighest])
+    object PersonLastHigh extends Ssdi.PersonLastHigh()(lp.provide[Ssdi.PersonLastHigh])
+    object PersonLastMedium extends Ssdi.PersonLastMedium()(lp.provide[Ssdi.PersonLastMedium])
+
+    object PersonFirst extends TrieUnionLexicon("person-first", PersonFirstHighest, PersonFirstHigh, PersonFirstMedium)
+
+    object PersonLast extends TrieUnionLexicon("person-last", PersonLastHighest, PersonLastHigh, PersonLastMedium)
+
   }
-  
-  object spanish {
-    
-      object Continents extends Iesl.es.Continents()(lp.provide[Iesl.es.Continents])
-      object Day extends Iesl.es.Day()(lp.provide[Iesl.es.Day])
-      object Month extends Iesl.es.Month()(lp.provide[Iesl.es.Month])
-      object PersonFirst extends Iesl.es.PersonFirst()(lp.provide[Iesl.es.PersonFirst])
-      object PersonLast extends Iesl.es.PersonLast()(lp.provide[Iesl.es.PersonLast])
-      object Location extends Iesl.es.Location()(lp.provide[Iesl.es.Location])
-      object Miscellaneous extends Iesl.es.Miscellaneous()(lp.provide[Iesl.es.Miscellaneous])
-      object Person extends Iesl.es.Person()(lp.provide[Iesl.es.Person])
-      object Organization extends Iesl.es.Organization()(lp.provide[Iesl.es.Organization])
-      object PersonHonorific extends Iesl.es.PersonHonorific()(lp.provide[Iesl.es.PersonHonorific])
-      object OrgSuffix extends Iesl.es.OrgSuffix()(lp.provide[Iesl.es.OrgSuffix])
-      object Demonym extends Iesl.es.Demonym()(lp.provide[Iesl.es.Demonym])
-    
-    
-      
-      object WikiBook extends Wikipedia.es.Book()(lp.provide[Wikipedia.es.Book])
-      object WikiFilm extends Wikipedia.es.Film()(lp.provide[Wikipedia.es.Film])
-      object WikiEvent extends Wikipedia.es.Event()(lp.provide[Wikipedia.es.Event])
-      object WikiBusiness extends Wikipedia.es.Business()(lp.provide[Wikipedia.es.Business])
-      
-      object WikiLocation extends Wikipedia.es.Location()(lp.provide[Wikipedia.es.Location])
-      object WikiLocationRedirect extends Wikipedia.es.LocationRedirect()(lp.provide[Wikipedia.es.LocationRedirect])
-      object WikiLocationAndRedirect extends TrieUnionLexicon("es-location-and-redirect", WikiLocation, WikiLocationRedirect)
-    
-      object WikiPerson extends Wikipedia.es.Person()(lp.provide[Wikipedia.es.Person])
-      object WikiPersonRedirect extends Wikipedia.es.PersonRedirect()(lp.provide[Wikipedia.es.PersonRedirect])
-      object WikiPersonAndRedirect extends TrieUnionLexicon("es-person-and-redirect", WikiPerson, WikiPersonRedirect)
- 
-      object WikiOrganization extends Wikipedia.es.Organization()(lp.provide[Wikipedia.es.Organization])
-      object WikiOrganizationRedirect extends Wikipedia.es.OrganizationRedirect()(lp.provide[Wikipedia.es.OrganizationRedirect])
-      object WikiOrganizationAndRedirect extends TrieUnionLexicon("es-organization-and-redirect", WikiOrganization, WikiOrganizationRedirect)
-  }  
 
 }
-

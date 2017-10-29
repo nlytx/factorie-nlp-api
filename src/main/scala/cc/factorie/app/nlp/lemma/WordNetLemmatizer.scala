@@ -14,9 +14,9 @@ package cc.factorie.app.nlp.lemma
 
 import java.io.{FileInputStream, InputStream}
 
-import cc.factorie.app.nlp._
 import cc.factorie.app.nlp.pos.{PennPosDomain, PennPosTag}
 import cc.factorie.app.nlp.wordnet.WordNet
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
 import cc.factorie.util.ClasspathURL
 
 import scala.io.Source
@@ -168,5 +168,5 @@ object WordNetLemmatizer extends WordNetLemmatizer(string => ClasspathURL.fromDi
 //  }
 //}
 
-class WordNetTokenLemma(token:Token, s:String) extends TokenLemma(token, s)
+
 

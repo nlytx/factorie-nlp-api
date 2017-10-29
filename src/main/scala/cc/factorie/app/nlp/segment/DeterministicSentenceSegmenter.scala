@@ -12,10 +12,13 @@
    limitations under the License. */
 package cc.factorie.app.nlp.segment
 
-import cc.factorie.app.nlp._
+import cc.factorie.app.nlp.lexicon.StopWords
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Sentence, Token}
+
 
 /** Segments a sequence of tokens into sentences.
-    @author Andrew McCallum */
+  *
+  * @author Andrew McCallum */
 class DeterministicSentenceSegmenter extends DocumentAnnotator {
 
   /** How the annotation of this DocumentAnnotator should be printed in one-word-per-line (OWPL) format.
@@ -48,7 +51,7 @@ class DeterministicSentenceSegmenter extends DocumentAnnotator {
   val charOffsetBoundary = 10
   
   /** Returns true for strings that probably start a sentence after a word that ends with a period. */
-  def possibleSentenceStart(s:String): Boolean = java.lang.Character.isUpperCase(s(0)) && (cc.factorie.app.nlp.lexicon.StopWords.containsWord(s) || s == "Mr." || s == "Mrs." || s == "Ms." || s == "\"" || s == "''") // Consider adding more honorifics and others here. -akm
+  def possibleSentenceStart(s:String): Boolean = java.lang.Character.isUpperCase(s(0)) && (StopWords.containsWord(s) || s == "Mr." || s == "Mrs." || s == "Ms." || s == "\"" || s == "''") // Consider adding more honorifics and others here. -akm
   
   
   def process(document: Document): Document = {
@@ -121,17 +124,4 @@ class DeterministicSentenceSegmenter extends DocumentAnnotator {
   def postAttrs: Iterable[Class[_]] = List(classOf[Sentence])
 }
 
-object DeterministicSentenceSegmenter extends DeterministicSentenceSegmenter {
-  /*
-  def main(args: Array[String]): Unit = {
-    for (filename <- args) yield {
-      val doc = new Document(io.Source.fromFile(filename).mkString).setName(filename)
-      DeterministicNormalizingTokenizer.process(doc)
-      DeterministicSentenceSegmenter.this.process(doc)
-      println(filename)
-      for (sentence <- doc.sentences)
-        print("\n\n" + sentence.tokens.map(_.string).mkString(" | "))
-      print("\n\n\n")
-    }
-  } */
-}
+object DeterministicSentenceSegmenter extends DeterministicSentenceSegmenter

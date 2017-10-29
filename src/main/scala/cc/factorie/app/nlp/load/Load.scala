@@ -12,7 +12,8 @@
    limitations under the License. */
 
 package cc.factorie.app.nlp.load
-import cc.factorie.app.nlp._
+
+import cc.factorie.app.nlp.Document
 import cc.factorie.util.ISAble
 
 import scala.io.Source
@@ -28,10 +29,4 @@ trait Load {
   def fromFile(file:java.io.File, encoding:String = "UTF-8"): Seq[Document] = fromSource(Source.fromFile(file, encoding))
   def fromFilename(filename:String, encoding:String = "UTF-8"): Seq[Document] = fromFile(new java.io.File(filename), encoding)
   def fromISAble[A](a:A)(implicit conv:ISAble[A]) = fromStream(conv(a))
-}
-
-/** The interface common to objects that create Documents from the files in a directory.
-    @author Andrew McCallum */
-trait LoadDirectory {
-  def fromDirectory(dir:java.io.File): Seq[Document]
 }

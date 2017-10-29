@@ -11,7 +11,8 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 package cc.factorie.app.nlp.lemma
-import cc.factorie.app.nlp._
+
+import cc.factorie.app.nlp.Token
 import cc.factorie.variable.StringVariable
 
 /** Used as an attribute of Token to hold the lemma of the Token.string.

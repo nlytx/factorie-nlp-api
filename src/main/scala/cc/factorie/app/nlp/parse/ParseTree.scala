@@ -1,40 +1,9 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
-
 package cc.factorie.app.nlp.parse
-import cc.factorie.app.nlp._
-//import cc.factorie.app.nlp.load.LoadOntonotes5
-import cc.factorie.util.Cubbie
-import cc.factorie.variable.{EnumDomain, LabeledCategoricalVariable}
+
+import cc.factorie.app.nlp.{Sentence, Token}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
-
-// Representation for a dependency parse
-
-// TODO I think this should instead be "ParseEdgeLabelDomain". -akm
-object ParseTreeLabelDomain extends EnumDomain {
-  val acomp, advcl, advmod, agent, amod, appos, attr, aux, auxpass, cc, ccomp, complm, conj, csubj, csubjpass, 
-  dep, det, dobj, expl, hmod, hyph, infmod, intj, iobj, mark, meta, neg, nmod, nn, npadvmod, nsubj, nsubjpass, 
-  num, number, oprd, parataxis, partmod, pcomp, pobj, poss, possessive, preconj, predet, prep, prt, punct, 
-  quantmod, rcmod, root, xcomp = Value
-  index("") // necessary for empty categories
-  freeze()
-  def defaultCategory = "nn"
-  def defaultIndex = index(defaultCategory)
-}
-// TODO I think this should instead be "ParseEdgeLabels extends LabeledCategoricalSeqVariable". -akm
-class ParseTreeLabel(val tree:ParseTree, targetValue:String = ParseTreeLabelDomain.defaultCategory) extends LabeledCategoricalVariable(targetValue) { def domain = ParseTreeLabelDomain }
 
 object ParseTree {
   val rootIndex = -1
@@ -63,7 +32,7 @@ class ParseTree(val sentence:Sentence, theTargetParents:Array[Int], theTargetLab
   def parentsAccuracy: Double = numParentsCorrect.toDouble / _parents.length
   def numLabelsCorrect: Int = {var result = 0; for (i <- 0 until _labels.length) if (_labels(i).valueIsTarget) result += 1; result }
   def labelsAccuracy: Double = numLabelsCorrect.toDouble / _labels.length
-  /** Returns the position in the sentence of the root token. */ 
+  /** Returns the position in the sentence of the root token. */
   def rootChildIndex: Int = firstChild(-1)
   /** Return the token at the root of the parse tree.  The parent of this token is null.  The parentIndex of this position is -1. */
   def rootChild: Token = sentence.tokens(rootChildIndex)
@@ -183,7 +152,7 @@ class ParseTree(val sentence:Sentence, theTargetParents:Array[Int], theTargetLab
     result
   }
   //def childrenOfLabel(token:Token, labelIntValue:Int): Seq[Token] = childrenOfLabel(token.position - sentence.start, labelIntValue)
-  //def childrenLabeled(index:Int, labelValue:DiscreteValue): Seq[Token] = childrenLabeled(index, labelValue.intValue) 
+  //def childrenLabeled(index:Int, labelValue:DiscreteValue): Seq[Token] = childrenLabeled(index, labelValue.intValue)
   //def childrenOfLabel(token:Token, labelValue:DiscreteValue): Seq[Token] = childrenOfLabel(token.position - sentence.start, labelValue.intValue)
   /** Return the label on the edge from the child at sentence position 'index' to its parent. */
   def label(index:Int): ParseTreeLabel = _labels(index)
@@ -354,37 +323,4 @@ class ParseTree(val sentence:Sentence, theTargetParents:Array[Int], theTargetLab
     else ""
   }
 
-}
-
-// Example usages:
-// token.sentence.attr[ParseTree].parent(token)
-// sentence.attr[ParseTree].children(token)
-// sentence.attr[ParseTree].setParent(token, parentToken)
-// sentence.attr[ParseTree].label(token)
-// sentence.attr[ParseTree].label(token).set("SUBJ")
-
-// Methods also created in Token supporting:
-// token.parseParent
-// token.setParseParent(parentToken)
-// token.parseChildren
-// token.parseLabel
-// token.leftChildren
-
-class ParseTreeCubbie extends Cubbie {
-  val parents = IntListSlot("parents")
-  val labels = StringListSlot("labels")
-  def newParseTree(s:Sentence): ParseTree = new ParseTree(s) // This will be abstract when ParseTree domain is unfixed
-  def storeParseTree(pt:ParseTree): this.type = {
-    parents := pt.parents
-    labels := pt.labels.map(_.categoryValue)
-    this
-  }
-  def fetchParseTree(s:Sentence): ParseTree = {
-    val pt = newParseTree(s)
-    for (i <- 0 until s.length) {
-      pt.setParent(i, parents.value(i))
-      pt.label(i).setCategory(labels.value(i))(null)
-    }
-    pt
-  }
 }

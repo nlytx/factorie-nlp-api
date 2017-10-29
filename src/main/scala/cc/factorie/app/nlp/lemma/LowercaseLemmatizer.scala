@@ -11,7 +11,9 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 package cc.factorie.app.nlp.lemma
-import cc.factorie.app.nlp._
+
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
+
 
 class LowercaseLemmatizer extends DocumentAnnotator with Lemmatizer with Serializable {
   def lemmatize(word:String): String = word.toLowerCase
@@ -25,4 +27,4 @@ class LowercaseLemmatizer extends DocumentAnnotator with Lemmatizer with Seriali
 }
 object LowercaseLemmatizer extends LowercaseLemmatizer
 
-class LowercaseTokenLemma(token:Token, s:String) extends TokenLemma(token, s)
+

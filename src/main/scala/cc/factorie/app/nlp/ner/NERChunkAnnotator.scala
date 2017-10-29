@@ -1,30 +1,11 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
 package cc.factorie.app.nlp.ner
 
-import cc.factorie.app.nlp.{Section, Token, Document, DocumentAnnotator}
-import scala.reflect.{ClassTag, classTag}
+import java.util.logging.{Level, Logger}
+
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Section, Token}
+
 import scala.collection.mutable
-
-import java.util.logging.{Logger, Level}
-
-/**
- * @author John Sullivan
- */
-object BilouConllNerChunkAnnotator extends NerChunkAnnotator[ConllNerSpan, BilouConllNerTag]({() => new ConllNerSpanBuffer}, {(s:Section, start:Int, end:Int, cat:String) => new ConllNerSpan(s, start, end, cat)})
-object BilouOntonotesNerChunkAnnotator extends NerChunkAnnotator[OntonotesNerSpan, BilouOntonotesNerTag]({() => new OntonotesNerSpanBuffer}, {(s:Section, start:Int, end:Int, cat:String) => new OntonotesNerSpan(s, start, end, cat)})
-object BioConllNerChunkAnnotator extends NerChunkAnnotator[ConllNerSpan, BioConllNerTag]({() => new ConllNerSpanBuffer}, {(s:Section, start:Int, end:Int, cat:String) => new ConllNerSpan(s, start, end, cat)})
-object BioOntonotesNerChunkAnnotator extends NerChunkAnnotator[OntonotesNerSpan, BioOntonotesNerTag]({() => new OntonotesNerSpanBuffer}, {(s:Section, start:Int, end:Int, cat:String) => new OntonotesNerSpan(s, start, end, cat)})
+import scala.reflect.{ClassTag, classTag}
 
 /** Takes documents that are already annotated with token-level NerTags of type Tag and annotates them with NerSpans
   * of type Span */
@@ -85,5 +66,5 @@ class NerChunkAnnotator[Span <: NerSpan : ClassTag, Tag <: NerTag : ClassTag](ne
 }
 
 object NerChunkAnnotator {
-    private val logger : Logger = Logger.getLogger(getClass.getName)
+  private val logger : Logger = Logger.getLogger(getClass.getName)
 }
