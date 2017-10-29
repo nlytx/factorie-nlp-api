@@ -13,13 +13,11 @@
 package cc.factorie.app.nlp.ner
 
 import cc.factorie.app.nlp.Token
+import cc.factorie.app.nlp.lexicon.{LexiconsProvider, StaticLexicons}
 import cc.factorie.variable.CategoricalVectorVar
-import cc.factorie.app.nlp.lexicon.StaticLexicons
-import cc.factorie.app.nlp.lexicon.LexiconsProvider
-import cc.factorie.app.nlp.lemma.LowercaseTokenLemma
 
 class StaticLexiconFeatures(lexicon:StaticLexicons, lang: String) extends NerLexiconFeatures {
-    //this block serves to initialize all of the lexicons used by the model before processing
+    //this block serves to initialize all of the lexicon used by the model before processing
   lexicon.synchronized {
     
     if (lang.equals("en") || lang.equals("all")){
@@ -64,36 +62,38 @@ class StaticLexiconFeatures(lexicon:StaticLexicons, lang: String) extends NerLex
     	lexicon.wikipedia.PersonAndRedirect.toString()
     	lexicon.wikipedia.OrganizationAndRedirect.toString()
     }
-    
-    if (lang.equals("es") || lang.equals("all")){
-      
-      lexicon.spanish.Continents.toString()
-      lexicon.spanish.Month.toString()
-      lexicon.spanish.Day.toString()
-      lexicon.spanish.PersonFirst.toString()
-      lexicon.spanish.PersonLast.toString()
-      lexicon.spanish.Person.toString()
-      lexicon.spanish.PersonHonorific.toString()
-      lexicon.spanish.Location.toString()
-      lexicon.spanish.Organization.toString()
-      lexicon.spanish.Miscellaneous.toString()
-      lexicon.spanish.OrgSuffix.toString()
-      lexicon.spanish.Demonym.toString()
-  
-      
-      lexicon.spanish.WikiBook.toString()    
-      lexicon.spanish.WikiEvent.toString()    
-      lexicon.spanish.WikiBusiness.toString()  
-      lexicon.spanish.WikiFilm.toString()
-      
-      lexicon.spanish.WikiPerson.toString()
-      lexicon.spanish.WikiLocation.toString()
-      lexicon.spanish.WikiOrganization.toString()
-      lexicon.spanish.WikiLocationAndRedirect.toString()
-      lexicon.spanish.WikiPersonAndRedirect.toString()
-      lexicon.spanish.WikiOrganizationAndRedirect.toString()
-    }
-     
+
+		/* Removed Spanish language for this api
+//    if (lang.equals("es") || lang.equals("all")){
+//
+//      lexicon.spanish.Continents.toString()
+//      lexicon.spanish.Month.toString()
+//      lexicon.spanish.Day.toString()
+//      lexicon.spanish.PersonFirst.toString()
+//      lexicon.spanish.PersonLast.toString()
+//      lexicon.spanish.Person.toString()
+//      lexicon.spanish.PersonHonorific.toString()
+//      lexicon.spanish.Location.toString()
+//      lexicon.spanish.Organization.toString()
+//      lexicon.spanish.Miscellaneous.toString()
+//      lexicon.spanish.OrgSuffix.toString()
+//      lexicon.spanish.Demonym.toString()
+//
+//
+//      lexicon.spanish.WikiBook.toString()
+//      lexicon.spanish.WikiEvent.toString()
+//      lexicon.spanish.WikiBusiness.toString()
+//      lexicon.spanish.WikiFilm.toString()
+//
+//      lexicon.spanish.WikiPerson.toString()
+//      lexicon.spanish.WikiLocation.toString()
+//      lexicon.spanish.WikiOrganization.toString()
+//      lexicon.spanish.WikiLocationAndRedirect.toString()
+//      lexicon.spanish.WikiPersonAndRedirect.toString()
+//      lexicon.spanish.WikiOrganizationAndRedirect.toString()
+
+//    }
+     */
   }
   
   
@@ -142,7 +142,7 @@ class StaticLexiconFeatures(lexicon:StaticLexicons, lang: String) extends NerLex
     	lexicon.wikipedia.PersonAndRedirect.tagText(tokenSequence,vf,"WIKI-PERSON-REDIRECT")
     	lexicon.wikipedia.OrganizationAndRedirect.tagText(tokenSequence,vf,"WIKI-ORG-REDIRECT")
     }
-
+/*
     if (lang.equals("es") || lang.equals("all")){
       
       lexicon.spanish.Continents.tagText(tokenSequence,vf,"CONTINENT")
@@ -171,7 +171,7 @@ class StaticLexiconFeatures(lexicon:StaticLexicons, lang: String) extends NerLex
       lexicon.spanish.WikiPersonAndRedirect.tagText(tokenSequence,vf,"WIKI-PERSON-REDIRECT")
       lexicon.spanish.WikiOrganizationAndRedirect.tagText(tokenSequence,vf,"WIKI-ORG-REDIRECT")
     }
-
+*/
   }
 
 }

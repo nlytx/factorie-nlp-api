@@ -18,6 +18,7 @@ import java.util.zip.GZIPInputStream
 import cc.factorie.la
 import cc.factorie.util.ClasspathURL
 
+import scala.io
 
 object SkipGramEmbedding extends SkipGramEmbedding(s => ClasspathURL.fromDirectory[SkipGramEmbedding](s).openConnection().getInputStream, 100)
 

@@ -12,8 +12,9 @@
    limitations under the License. */
 
 package cc.factorie.app.topics.lda
-import java.io.{BufferedReader, File, FileInputStream, InputStreamReader, PrintWriter, Reader, StringReader}
+import java.io._
 
+import cc.factorie.app.nlp.lexicon.{StopWords, TriePhraseLexicon}
 import cc.factorie.variable._
 
 import scala.collection.mutable.ArrayBuffer
@@ -102,7 +103,7 @@ class Document(val domain:CategoricalSeqDomain[String], var name:String, tokens:
 }
 
 object Document {
-  import cc.factorie.app.nlp.lexicon.{StopWords, TriePhraseLexicon}
+
   import cc.factorie.app.strings.{StringSegmenter, alphaSegmenter}
 
   import scala.util.control.Breaks._

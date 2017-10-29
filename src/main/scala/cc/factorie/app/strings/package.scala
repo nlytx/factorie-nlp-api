@@ -13,6 +13,8 @@
 
 package cc.factorie.app
 
+import cc.factorie.app.nlp.lexicon.NumberWords
+
 package object strings {
 
   /** Read the entire contents of the InputStream with the given encoding, and return them as a String. */
@@ -77,10 +79,10 @@ package object strings {
     else word
   }
   def collapseDigits(word:String): String = {
-    if (cc.factorie.app.nlp.lexicon.NumberWords.containsWord(word) || containsDigitRegex.findFirstIn(word).nonEmpty) "0" else word
+    if (NumberWords.containsWord(word) || containsDigitRegex.findFirstIn(word).nonEmpty) "0" else word
   }
   def replaceDigits(word:String): String = {
-    if (cc.factorie.app.nlp.lexicon.NumberWords.containsWord(word)) "<NUM>" else digitsRegex.replaceAllIn(word, "0")
+    if (NumberWords.containsWord(word)) "<NUM>" else digitsRegex.replaceAllIn(word, "0")
   }
 
   /** Implements Levenshtein Distance, with specific operation costs to go from this String to String s2. */

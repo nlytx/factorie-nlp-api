@@ -14,16 +14,16 @@ package cc.factorie.util
 
 import java.io._
 import java.net.URL
-import java.nio.file.{Paths, Path}
+import java.nio.file.{Path, Paths}
 
 import cc.factorie.app.nlp.lexicon.LexiconsProvider
 
 import scala.language.implicitConversions
-import scala.reflect.{ClassTag, classTag}
 import scala.reflect.runtime.universe.{TypeTag, typeTag}
+import scala.reflect.{ClassTag, classTag}
 
 /**
- * [[ModelProvider]] is a generic trait that serves to provide trained models (and/or lexicons) to factorie classes
+ * [[ModelProvider]] is a generic trait that serves to provide trained models (and/or lexicon) to factorie classes
  * without access to the classpath or system properties of the JVM within which factorie is running. This should replace
  * the existing idiom of using [[cc.factorie.util.ClasspathURL]] to resolve models. [[ModelProvider.classpath]] provides
  * the functionality previously supplied by [[cc.factorie.util.ClasspathURL]]. ModelProvider provides resources as

@@ -10,14 +10,16 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-//package cc.factorie.app.strings
+package cc.factorie.app.strings
+
+import scala.io.Source
 
 /**
  * Rewritten from http://tartarus.org/martin/PorterStemmer/scala.txt
  * for thread-safety and style (but definitely not too pretty yet).
  * @author Brian Martin
  */
-/*
+
 object PorterStemmer {
   val vowels = "aeiou"
   val step1aVals = List(("sses", "ss"), ("ies","i"), ("ss","ss"), ("s", ""))
@@ -139,7 +141,7 @@ object PorterStemmer {
   def apply(s:String): String = applySteps(s)
 
   def main(args: Array[String]): Unit = {
-    def getOWPL(f: String) = io.Source.fromFile(f).getLines().toSeq.map(_.trim)
+    def getOWPL(f: String) = Source.fromFile(f).getLines().toSeq.map(_.trim)
 
     if (args.length != 2)
       println("Expected arguments are a OWPL file of unstemmed and a OWPL file of properly stemmed words to check against.\n" +
@@ -160,4 +162,3 @@ object PorterStemmer {
     stemmed.zip(trueStemmed).take(20).foreach(s => println("sample: " + s._1 + " " + s._2))
   }
 }
-*/

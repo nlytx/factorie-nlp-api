@@ -99,12 +99,5 @@ class CorefOptions {
     learningRate = opts.learningRate.value
     conjunctionStyle = conjunctionStyle
   }
-
 }
 
-object ConjunctionOptions {
-  val NO_CONJUNCTIONS = 1
-  val HASH_CONJUNCTIONS = 2
-  val SLOW_CONJUNCTIONS = 3
-  val PRON_CONJUNCTIONS = 4
-}

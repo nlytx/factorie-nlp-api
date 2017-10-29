@@ -11,7 +11,9 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 package cc.factorie.app.nlp.lemma
-import cc.factorie.app.nlp._
+
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
+
 
 class SimplifyDigitsLemmatizer extends DocumentAnnotator {
   def lemmatize(word:String): String = cc.factorie.app.strings.simplifyDigits(word)
@@ -25,4 +27,4 @@ class SimplifyDigitsLemmatizer extends DocumentAnnotator {
 }
 object SimplifyDigitsLemmatizer extends SimplifyDigitsLemmatizer
 
-class SimplifyDigitsTokenLemma(token:Token, s:String) extends TokenLemma(token, s)
+

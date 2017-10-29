@@ -12,9 +12,10 @@
    limitations under the License. */
 package cc.factorie.app.nlp.ner
 
-import cc.factorie.app.chain.{ChainHelper, ChainCliqueValues}
-import cc.factorie.app.nlp.{Document, Token, DocumentAnnotator}
-import cc.factorie.la.{Tensor2, DenseTensor2}
+
+import cc.factorie.app.chain.{ChainCliqueValues, ChainHelper}
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
+import cc.factorie.la.{DenseTensor2, Tensor2}
 import cc.factorie.util.Logger
 
 import scala.reflect.{ClassTag, classTag}

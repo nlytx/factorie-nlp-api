@@ -10,8 +10,10 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-package cc.factorie.app.nlp
+package cc.factorie.app
 
+import cc.factorie.app.nlp.Token
+import cc.factorie.app.nlp.pos.LabeledPennPosTag
 import cc.factorie.variable.MutableCategoricalVar
 
 package object pos {

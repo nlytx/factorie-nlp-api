@@ -1,87 +1,10 @@
-/* Copyright (C) 2008-2016 University of Massachusetts Amherst.
-   This file is part of "FACTORIE" (Factor graphs, Imperative, Extensible)
-   http://factorie.cs.umass.edu, http://github.com/factorie
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License. */
-
 package cc.factorie.app.nlp.coref
 
-import cc.factorie.app.nlp.lexicon.{StopWords, StaticLexicons}
+import cc.factorie.app.nlp.lexicon.StaticLexicons
 import cc.factorie.app.nlp.ner.OntonotesEntityTypeDomain
-import cc.factorie.app.nlp.phrase.{Gender, Number, _}
-import cc.factorie.app.nlp.wordnet.WordNet
+import cc.factorie.app.nlp.phrase.{Gender, GenderDomain}
 
 import scala.collection.mutable
-
-/** Various lazily-evaluated cached characteristics of a Mention, typically attached to a Mention as an attr. */
-class MentionCharacteristics(val mention: Mention, lexicon:StaticLexicons) {
-  // TODO These should be cleaned up and made more efficient -akm
-  lazy val isPRO = CorefFeatures.posTagsSet.contains(mention.phrase.headToken.posTag.categoryValue)
-  lazy val isProper = CorefFeatures.properSet.contains(mention.phrase.headToken.posTag.categoryValue)
-  lazy val isNoun = CorefFeatures.nounSet.contains(mention.phrase.headToken.posTag.categoryValue)
-  lazy val isPossessive = CorefFeatures.posSet.contains(mention.phrase.headToken.posTag.categoryValue)
-
-  lazy val hasSpeakWord = mention.phrase.exists(s => lexicon.iesl.Say.contains(s.string))
-  lazy val hasSpeakWordContext = prev.exists(w => lexicon.iesl.Say.containsWord(w)) || follow.exists(w => lexicon.iesl.Say.containsWord(w))
-  lazy val wnLemma = WordNet.lemma(mention.phrase.headToken.string, "n")
-  lazy val wnSynsets = WordNet.synsets(wnLemma).toSet
-  lazy val wnHypernyms = WordNet.hypernyms(wnLemma)
-  lazy val wnAntonyms = wnSynsets.flatMap(_.antonyms()).toSet
-  lazy val nounWords: Set[String] =
-      mention.phrase.tokens.filter(_.posTag.categoryValue.startsWith("N")).map(t => t.string.toLowerCase).toSet
-  lazy val lowerCaseHead: String = mention.phrase.headToken.string.toLowerCase
-  lazy val lowerCaseString:String =  mention.phrase.string.toLowerCase
-  lazy val headPhraseTrim: String = mention.phrase.tokensString(" ").trim
-  lazy val nonDeterminerWords: Seq[String] =
-    mention.phrase.tokens.filterNot(_.posTag.categoryValue == "DT").map(t => t.string.toLowerCase)
-  lazy val initials: String =
-      mention.phrase.tokens.map(_.string).filterNot(lexicon.iesl.OrgSuffix.contains).filter(t => t(0).isUpper).map(_(0)).mkString("")
-  lazy val predictEntityType: Int = mention.phrase.attr[OntonotesPhraseEntityType].intValue
-  lazy val demonym: String = lexicon.iesl.DemonymMap.getOrElse(headPhraseTrim, "")
-
-  lazy val capitalization: Char = {
-      if (mention.phrase.length == 1 && mention.phrase.head.positionInSentence == 0) 'u' // mention is the first word in sentence
-      else {
-        val s = mention.phrase.value.filter(_.posTag.categoryValue.startsWith("N")).map(_.string.trim) // TODO Fix this slow String operation
-        if (s.forall(_.forall(_.isUpper))) 'a'
-        else if (s.forall(t => t.head.isLetter && t.head.isUpper)) 't'
-        else 'f'
-      }
-    }
-  lazy val gender = mention.phrase.attr[Gender].categoryValue
-  lazy val number = mention.phrase.attr[Number].categoryValue
-  lazy val nounPhraseType = mention.phrase.attr[NounPhraseType].categoryValue
-  lazy val genderIndex = mention.phrase.attr[Gender].intValue
-  lazy val numberIndex = mention.phrase.attr[Number].intValue
-  lazy val nounPhraseTypeIndex = mention.phrase.attr[NounPhraseType].intValue
-  lazy val headPos = mention.phrase.headToken.posTag.categoryValue
-  lazy val inParens = mention.phrase.sentence.tokens.exists(t => t.posTag.categoryValue == "LRB" && t.positionInSection < mention.phrase.start)
-  lazy val prev = Vector(TokenFreqs.getTokenStringAtOffset(mention.phrase(0),-1), TokenFreqs.getTokenStringAtOffset(mention.phrase(0),-2))
-  lazy val follow = Vector(TokenFreqs.getTokenStringAtOffset(mention.phrase.last,1), TokenFreqs.getTokenStringAtOffset(mention.phrase.last,2))
-
-  lazy val acronym: Set[String] = {
-    if (mention.phrase.length == 1)
-        Set.empty
-      else {
-        val alt1 = mention.phrase.value.map(_.string.trim).filter(_.exists(_.isLetter)) // tokens that have at least one letter character
-        val alt2 = alt1.filterNot(t => StopWords.contains(t.toLowerCase)) // alt1 tokens excluding stop words
-        val alt3 = alt1.filter(_.head.isUpper) // alt1 tokens that are capitalized
-        val alt4 = alt2.filter(_.head.isUpper)
-        Seq(alt1, alt2, alt3, alt4).map(_.map(_.head).mkString.toLowerCase).toSet
-      }
-  }
-
-  lazy val canonicalizedPronounOrType =
-    if (isPRO) PronounSets.canonicalForms.getOrElse(lowerCaseString,lowerCaseHead)
-    else nounPhraseType
-}
 
 // TODO I think this should be renamed, but I'm not sure to what. -akm
 object CorefFeatures {
@@ -220,7 +143,7 @@ object CorefFeatures {
   def numbersMatch(m1:Mention, m2:Mention): Ternary = {
     val n1 = m2.phrase.attr[Number].intValue
     val n2 = m1.phrase.attr[Number].intValue
-    import NumberDomain._
+    import cc.factorie.app.nlp.phrase.NumberDomain._
     if (n1 == n2 && n1 != UNKNOWN) True
     else if (n1 != n2 && n1 != UNKNOWN && n2 != UNKNOWN) False
     else if (n1 == UNKNOWN || n2 == UNKNOWN) {
@@ -279,78 +202,3 @@ object CorefFeatures {
     ret
   }
 }
-
-object PronounSets {
-  val firstPerson = Set("i", "me", "myself", "mine", "my", "we", "us", "ourself", "ourselves", "ours", "our")
-  val secondPerson = Set("you", "yourself", "yours", "your", "yourselves")
-  val thirdPerson = Set("he", "him", "himself", "his", "she", "herself", "hers", "her", "it", "itself", "its", "one", "oneself", "one's", "they", "them", "themself", "themselves", "theirs", "their",  "'em")
-  val other = Set("who", "whom", "whose", "where", "when", "which")
-
-  val demonstrative = Set("this", "that", "these", "those")
-
-  val singular = Set("i", "me", "myself", "mine", "my", "yourself", "he", "him", "himself", "his", "she", "her", "herself", "hers", "her", "it", "itself", "its", "one", "oneself", "one's")
-  val plural = Set("we", "us", "ourself", "ourselves", "ours", "our", "yourself", "yourselves", "they", "them", "themself", "themselves", "theirs", "their")
-  val male = Set("he", "him", "himself", "his")
-  val female = Set("her", "hers", "herself", "she")
-
-  val reflexive = Set("herself", "himself", "itself", "themselves", "yourselves", "oneself", "yourself", "themself", "myself")
-
-  val neuter = Set("it", "its", "itself", "this", "that", "anything", "something",  "everything", "nothing", "which", "what", "whatever", "whichever")
-  val personal = Set("you", "your", "yours", "i", "me", "my", "mine", "we", "our", "ours", "us", "myself", "ourselves", "themselves", "themself", "ourself", "oneself", "who", "whom", "whose", "whoever", "whomever", "anyone", "anybody", "someone", "somebody", "everyone", "everybody", "nobody")
-
-  val allPronouns = firstPerson ++ secondPerson ++ thirdPerson ++ other
-  val allPersonPronouns = allPronouns -- neuter
-  val canonicalForms = new mutable.HashMap[String,String](){
-    ("i", "i")
-    ("i", "i")
-    ("me", "i")
-    ("my", "i")
-    ("myself", "i")
-    ("mine", "i")
-    ("you", "you")
-    ("your", "you")
-    ("yourself", "you")
-    ("yourselves", "you")
-    ("yours", "you")
-    ("he", "he")
-    ("him", "he")
-    ("his", "he")
-    ("himself", "he")
-    ("she", "she")
-    ("her", "she")
-    ("herself", "she")
-    ("hers", "she")
-    ("we", "we")
-    ("us", "we")
-    ("our", "we")
-    ("ourself", "we")
-    ("ourselves", "we")
-    ("ours", "we")
-    ("they", "they")
-    ("them", "they")
-    ("their", "they")
-    ("themself", "they")
-    ("themselves", "they")
-    ("theirs", "they")
-    ("'em", "they")
-    ("it", "it")
-    ("itself", "it")
-    ("its", "it")
-    ("one", "one")
-    ("oneself", "one")
-    ("one's", "one")
-    ("this", "this")
-    ("that", "that")
-    ("these", "these")
-    ("those", "those")
-    ("which", "which")
-    ("who", "who")
-    ("whom", "who")
-    ("thy", "thy")
-    ("y'all", "you")
-    ("you're", "you")
-    ("you'll", "you")
-    ("'s", "'s")
-  }
-}
-

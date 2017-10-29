@@ -10,12 +10,15 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-/*
+
 package cc.factorie.app.nlp.lemma
-import cc.factorie.app.nlp._
+
+import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
+import cc.factorie.app.strings.PorterStemmer
+
 
 class PorterLemmatizer extends DocumentAnnotator with Lemmatizer {
-  def lemmatize(word:String): String = cc.factorie.app.strings.PorterStemmer(word)
+  def lemmatize(word:String): String = PorterStemmer(word)
   def process(document:Document): Document = {
     for (token <- document.tokens) token.attr += new PorterTokenLemma(token, lemmatize(token.string))
     document
@@ -26,5 +29,4 @@ class PorterLemmatizer extends DocumentAnnotator with Lemmatizer {
 }
 object PorterLemmatizer extends PorterLemmatizer
 
-class PorterTokenLemma(token:Token, s:String) extends TokenLemma(token, s)
-*/
+
