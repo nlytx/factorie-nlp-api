@@ -16,4 +16,6 @@ libraryDependencies ++= Seq(
                           "io.nlytx" %% "factorie-nlp-api" % "0.2",
                           "cc.factorie.app.nlp" % "all-models" % "1.2"
                           )
+
+resolvers += Resolver.bintrayRepo("nlytx", "factorie-nlp-api")
 ```
