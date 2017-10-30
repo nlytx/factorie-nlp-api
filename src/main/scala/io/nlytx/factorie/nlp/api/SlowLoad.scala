@@ -11,12 +11,12 @@ import cc.factorie.util.{ClasspathURL, ModelProvider}
 /**
   * Created by andrew@andrewresearch.net on 24/10/17.
   */
-object DocumentAnnotator {
+object SlowLoad {
 
   private val slf = new StaticLexiconFeatures(new StaticLexicons()(LexiconsProvider.classpath()), "en")
 
   private val nerMp = ModelProvider.classpath[ner.ConllChainNer]()
-  private val nerTagger = new ner.ConllChainNer()(nerMp,slf)
+  val nerTagger = new ner.ConllChainNer()(nerMp,slf)
   System.setProperty(
     classOf[ner.ConllChainNer].getName,
     ClasspathURL[ner.ConllChainNer](".factorie").getPath
@@ -29,13 +29,13 @@ object DocumentAnnotator {
 //    ClasspathURL[OntonotesPhraseEntityTypeLabeler](".factorie").getPath
 //  )
 
-  private val forCoref = coref.ForwardCoref
+  //private val forCoref = coref.ForwardCoref
 
-  private val posTagger =  OntonotesForwardPosTagger
-  private val parser = OntonotesTransitionBasedParser
+  //private val posTagger =  OntonotesForwardPosTagger
+  //private val parser = OntonotesTransitionBasedParser
 
 
-  val pipeline = DocumentAnnotatorPipeline(posTagger,parser,nerTagger,forCoref)
+  //val pipeline = DocumentAnnotatorPipeline(posTagger,parser,nerTagger,forCoref)
 
 
 

@@ -1,6 +1,6 @@
 name := "factorie-nlp-api"
 
-version := "0.2"
+version := "0.3"
 
 scalaVersion := "2.12.4"
 
@@ -12,6 +12,7 @@ val jblasV = "1.2.4"
 val apacheComsCompressV = "1.15"
 val apacheComsLangV = "3.6"
 val factorieV = "1.2"
+val akkaStreamV = "2.5.6"
 
 val scalaLangDeps = Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % scalaParserV,
@@ -20,6 +21,7 @@ val scalaLangDeps = Seq(
 )
 
 val scalaDeps = Seq(
+  "com.typesafe.akka" %% "akka-stream" % akkaStreamV,
   "org.json4s" %% "json4s-jackson" % "3.5.3",
 "cc.factorie.app.nlp" % "all-models" % factorieV
 )
