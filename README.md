@@ -1,4 +1,4 @@
-![scalaVersion](https://img.shields.io/badge/scala-2.12.4-blue.svg) ![license](https://img.shields.io/badge/license-Apache%202-blue.svg)  [ ![Download](https://api.bintray.com/packages/nlytx/factorie-nlp-api/factorie-nlp-api/images/download.svg?version=0.2) ](https://bintray.com/nlytx/factorie-nlp-api/factorie-nlp-api/0.2/link)
+[![Build Status](https://travis-ci.org/nlytx/factorie-nlp-api.svg?branch=master)](https://travis-ci.org/nlytx/factorie-nlp-api) ![scalaVersion](https://img.shields.io/badge/scala-2.12.4-blue.svg) ![license](https://img.shields.io/badge/license-Apache%202-blue.svg)  [ ![Download](https://api.bintray.com/packages/nlytx/factorie-nlp-api/factorie-nlp-api/images/download.svg?version=0.2) ](https://bintray.com/nlytx/factorie-nlp-api/factorie-nlp-api/0.2/link)
 
 # factorie-nlp-api
 
@@ -16,4 +16,6 @@ libraryDependencies ++= Seq(
                           "io.nlytx" %% "factorie-nlp-api" % "0.2",
                           "cc.factorie.app.nlp" % "all-models" % "1.2"
                           )
+
+resolvers += Resolver.bintrayRepo("nlytx", "factorie-nlp-api")
 ```
