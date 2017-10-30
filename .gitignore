@@ -53,3 +53,4 @@ fabric.properties
 /.idea/*
 /src/main/scala/worksheet.sc
 
+/src/main/flex/EnglishLexer.flex

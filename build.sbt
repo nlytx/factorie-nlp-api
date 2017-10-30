@@ -37,12 +37,12 @@ libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ javaDeps)
   //"org.slf4j" % "slf4j-log4j12" % "1.7.25" % Test,
 
 
-sourceGenerators in Compile += {
-  sourceManaged in compile map(dir => Seq(dir / "EnglishLexer.scala"))
-}
-sourceGenerators in Test += {
-  sourceManaged in test map(dir => Seq(dir / "EnglishLexer.scala"))
-}
+//sourceGenerators in Compile += {
+//  sourceManaged in compile += (baseDirectory.value / "src_managed" / "EnglishLexer.scala")
+//}
+//sourceGenerators in Test += {
+//  sourceManaged in test map(dir => Seq(dir / "EnglishLexer.scala"))
+//}
 
 //Enable this only for local builds - disabled for Travis
 enablePlugins(JavaAppPackaging) // sbt universal:packageZipTarball
