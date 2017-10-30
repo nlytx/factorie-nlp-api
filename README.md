@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/nlytx/factorie-nlp-api.svg?branch=master)](https://travis-ci.org/nlytx/factorie-nlp-api) ![scalaVersion](https://img.shields.io/badge/scala-2.12.4-blue.svg) ![license](https://img.shields.io/badge/license-Apache%202-blue.svg)  [ ![Download](https://api.bintray.com/packages/nlytx/factorie-nlp-api/factorie-nlp-api/images/download.svg?version=0.3) ](https://dl.bintray.com/nlytx/factorie-nlp-api/0.3/link)
+[![Build Status](https://travis-ci.org/nlytx/factorie-nlp-api.svg?branch=master)](https://travis-ci.org/nlytx/factorie-nlp-api) ![scalaVersion](https://img.shields.io/badge/scala-2.12.4-blue.svg) ![license](https://img.shields.io/badge/license-Apache%202-blue.svg)  [ ![Download](https://api.bintray.com/packages/nlytx-io/factorie-nlp-api/factorie-nlp-api/images/download.svg?version=0.3) ](https://bintray.com/nlytx-io/factorie-nlp-api/factorie-nlp-api/0.3/link)
 
 # factorie-nlp-api
 
