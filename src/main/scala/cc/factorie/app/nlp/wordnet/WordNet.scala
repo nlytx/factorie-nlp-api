@@ -21,6 +21,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
 class WordNet(val inputStreamFactory: String=>java.io.InputStream) {
+
   def this(wordNetDir:java.io.File) = this((string:String) => new java.io.FileInputStream(new java.io.File(wordNetDir, string)))
 
   val resourcePath = "dict/"
