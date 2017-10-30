@@ -40,6 +40,9 @@ libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ javaDeps)
 sourceGenerators in Compile += {
   sourceManaged in compile map(dir => Seq(dir / "EnglishLexer.scala"))
 }
+sourceGenerators in Test += {
+  sourceManaged in test map(dir => Seq(dir / "EnglishLexer.scala"))
+}
 
 //Enable this only for local builds - disabled for Travis
 enablePlugins(JavaAppPackaging) // sbt universal:packageZipTarball
