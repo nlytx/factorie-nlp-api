@@ -32,18 +32,9 @@ val javaDeps = Seq(
 
 libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ javaDeps)
 
-  //"org.mongodb" % "mongo-java-driver" % "3.5.0",
-
   //"junit" % "junit" % "4.12",
-
-
-  //"org.xerial.snappy" % "snappy-java" % "1.1.4",
-  //"info.bliki.wiki" % "bliki-core" % "3.1.0",
-
-  //"com.google.guava" % "guava" % "23.0",
   //"org.scalatest" %% "scalatest" % "3.0.4" % Test,
   //"org.slf4j" % "slf4j-log4j12" % "1.7.25" % Test,
-  //"com.github.fakemongo" % "fongo" % "2.1.0" % Test
 
 
 sourceGenerators in Compile += {
