@@ -1,12 +1,12 @@
 name := "factorie-nlp-api"
 
-version := "0.3"
+version := "0.5.1"
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.3"
 
 organization := "io.nlytx"
 
-val scalaLangV = "2.12.4"
+val scalaLangV = "2.12.3"
 val scalaParserV = "1.0.6"
 val jblasV = "1.2.4"
 val apacheComsCompressV = "1.15"
@@ -22,17 +22,21 @@ val scalaLangDeps = Seq(
 
 val scalaDeps = Seq(
   "com.typesafe.akka" %% "akka-stream" % akkaStreamV,
+  "com.typesafe.akka" %% "akka-slf4j" % akkaStreamV,
   "org.json4s" %% "json4s-jackson" % "3.5.3",
-"cc.factorie.app.nlp" % "all-models" % factorieV
+  "cc.factorie.app.nlp" % "all-models" % factorieV
 )
 
 val javaDeps = Seq(
   "org.jblas" % "jblas" % jblasV,
   "org.apache.commons" % "commons-compress" % apacheComsCompressV,
-  "org.apache.commons" % "commons-lang3" % apacheComsLangV
+  "org.apache.commons" % "commons-lang3" % apacheComsLangV,
+"ch.qos.logback" % "logback-classic" % "1.2.3"
 )
 
 libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ javaDeps)
+
+resolvers += "IESL Release" at "http://dev-iesl.cs.umass.edu/nexus/content/groups/public"
 
   //"junit" % "junit" % "4.12",
   //"org.scalatest" %% "scalatest" % "3.0.4" % Test,
@@ -50,10 +54,10 @@ libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ javaDeps)
 enablePlugins(JavaAppPackaging) // sbt universal:packageZipTarball
 //dockerExposedPorts := Seq(9000) // sbt docker:publishLocal
 
-javaOptions in Universal ++= Seq(
+//javaOptions in Universal ++= Seq(
   // -J params will be added as jvm parameters
-  "-J-Xmx6g",
-  "-J-Xms3g"
+  //"-J-Xmx6g",
+  //"-J-Xms3g"
 
   // others will be added as app parameters
   //  "-Dproperty=true",
@@ -61,6 +65,5 @@ javaOptions in Universal ++= Seq(
 
   // you can access any build setting/task here
   //s"-version=${version.value}"
-)
+//)
 
-resolvers += "IESL Release" at "http://dev-iesl.cs.umass.edu/nexus/content/groups/public"

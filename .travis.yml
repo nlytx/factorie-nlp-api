@@ -3,10 +3,10 @@ language: scala
 jdk: oraclejdk8
 
 scala:
-   - 2.12.4
+   - 2.12.3
 
 script:
-   - sbt ++$TRAVIS_SCALA_VERSION -J-Xmx6G test
+   - sbt ++$TRAVIS_SCALA_VERSION -J-Xmx2000m test
 
 # Use container-based infrastructure
 sudo: false

@@ -3,6 +3,7 @@ package cc.factorie.app.nlp.segment
 import java.io.StringReader
 
 import cc.factorie.app.nlp.{Document, DocumentAnnotator, Token}
+import cc.factorie.app.nlp.segment.EnglishLexer
 
 
 

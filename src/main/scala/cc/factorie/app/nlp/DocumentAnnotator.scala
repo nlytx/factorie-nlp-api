@@ -1,10 +1,13 @@
 package cc.factorie.app.nlp
 
+import akka.event.jul.Logger
 import cc.factorie.app.nlp.coref.Mention
 import cc.factorie.app.nlp.phrase.Phrase
 import cc.factorie.util.Threading
 
 trait DocumentAnnotator {
+
+
   def process(document: Document): Document  // NOTE: this method may mutate and return the same document that was passed in
   def prereqAttrs: Iterable[Class[_]]
   def postAttrs: Iterable[Class[_]]
