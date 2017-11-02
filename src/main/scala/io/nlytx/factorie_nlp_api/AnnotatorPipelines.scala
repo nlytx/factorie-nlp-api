@@ -29,6 +29,7 @@ object AnnotatorPipelines {
   val logger = Logging(system.eventStream, "factorie-nlp-api")
 
   type Pipeline = String => RunnableGraph[Future[Document]]
+  type DocPipeline = Document => RunnableGraph[Future[Document]]
 
   //Make Document
   private lazy val doc = Flow[String].map(new Document(_))
@@ -74,20 +75,22 @@ object AnnotatorPipelines {
 
   val defaultPipeline = lemmaPipeline
 
-  val parsePipeline = (s:String) =>
-    Source.single(s)
-      .via(doc.map(tokeniser).map(segmenter).map(normaliser).map(postagger).map(lemmatiser).map(parser))
+  val parsePipeline = (d:Document) =>
+    Source.single(d)
+      .map(parser)
       .toMat(Sink.head[Document])(Keep.right)
 
-  val nerPipeline = (s:String) =>
-    Source.single(s)
-      .via(doc.map(tokeniser).map(segmenter).map(normaliser).map(postagger).map(lemmatiser).map(parser).mapAsync(2)(nerTagger))
+  val nerPipeline = (d:Document) =>
+    Source.single(d)
+      .mapAsync(2)(nerTagger)
       .toMat(Sink.head[Document])(Keep.right)
 
   val completePipeline = nerPipeline
 
   /* The main method for running a pipeline */
   def process(text:String,pipeline:Pipeline=defaultPipeline):Future[Document] = pipeline(text).run
+
+  def processDoc(doc:Document,pipeline:DocPipeline):Future[Document] = pipeline(doc).run
 
   def profile(text:String,pipeline:Pipeline=defaultPipeline,wait:Int=180):Document = {
     logger.info(s"Profiling pipeline...")
