@@ -1,4 +1,4 @@
-package io.nlytx.factorie.nlp.api
+package io.nlytx.factorie_nlp_api
 
 import cc.factorie.app.nlp.lexicon.{LexiconsProvider, StaticLexicons}
 import cc.factorie.app.nlp.ner.StaticLexiconFeatures
