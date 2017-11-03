@@ -13,7 +13,7 @@
 
 package cc.factorie.app
 
-import cc.factorie.app.nlp.lexicon.NumberWords
+import cc.factorie.nlp.lexicon.NumberWords
 
 package object strings {
 

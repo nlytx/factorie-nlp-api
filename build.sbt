@@ -1,6 +1,6 @@
 name := "factorie-nlp-api"
 
-version := "0.5.1"
+version := "0.7.1"
 
 scalaVersion := "2.12.3"
 
@@ -23,8 +23,12 @@ val scalaLangDeps = Seq(
 val scalaDeps = Seq(
   "com.typesafe.akka" %% "akka-stream" % akkaStreamV,
   "com.typesafe.akka" %% "akka-slf4j" % akkaStreamV,
-  "org.json4s" %% "json4s-jackson" % "3.5.3",
-  "cc.factorie.app.nlp" % "all-models" % factorieV
+  "org.json4s" %% "json4s-jackson" % "3.5.3"
+  //"cc.factorie.app.nlp" % "all-models" % factorieV
+)
+
+val testDeps = Seq(
+  "org.scalatest" %% "scalatest" % "3.0.4" % Test
 )
 
 val javaDeps = Seq(
@@ -34,12 +38,12 @@ val javaDeps = Seq(
 "ch.qos.logback" % "logback-classic" % "1.2.3"
 )
 
-libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ javaDeps)
+libraryDependencies ++= (scalaLangDeps ++ scalaDeps ++ testDeps ++ javaDeps)
 
-resolvers += "IESL Release" at "http://dev-iesl.cs.umass.edu/nexus/content/groups/public"
+//resolvers += "IESL Release" at "http://dev-iesl.cs.umass.edu/nexus/content/groups/public"
 
   //"junit" % "junit" % "4.12",
-  //"org.scalatest" %% "scalatest" % "3.0.4" % Test,
+  //,
   //"org.slf4j" % "slf4j-log4j12" % "1.7.25" % Test,
 
 
@@ -51,7 +55,7 @@ resolvers += "IESL Release" at "http://dev-iesl.cs.umass.edu/nexus/content/group
 //}
 
 //Enable this only for local builds - disabled for Travis
-enablePlugins(JavaAppPackaging) // sbt universal:packageZipTarball
+//enablePlugins(JavaAppPackaging) // sbt universal:packageZipTarball
 //dockerExposedPorts := Seq(9000) // sbt docker:publishLocal
 
 //javaOptions in Universal ++= Seq(

@@ -14,7 +14,7 @@
 package cc.factorie.app.topics.lda
 import java.io._
 
-import cc.factorie.app.nlp.lexicon.{StopWords, TriePhraseLexicon}
+import cc.factorie.nlp.lexicon.{StopWords, TriePhraseLexicon}
 import cc.factorie.variable._
 
 import scala.collection.mutable.ArrayBuffer

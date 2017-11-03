@@ -13,8 +13,8 @@
 
 package cc.factorie.util.namejuggler
 
-import cc.factorie.app.nlp.lexicon.TrieUnionLexicon
-import cc.factorie.app.nlp.lexicon.iesl.{PersonFirstHigh, PersonFirstHighest}
+import cc.factorie.nlp.lexicon.TrieUnionLexicon
+import cc.factorie.nlp.lexicon.iesl.{PersonFirstHigh, PersonFirstHighest}
 import cc.factorie.util.ModelProvider
 import cc.factorie.util.namejuggler.StringUtils._
 

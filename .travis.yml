@@ -8,6 +8,10 @@ scala:
 script:
    - sbt ++$TRAVIS_SCALA_VERSION -J-Xmx2000m test
 
+# Extra memory dist
+#sudo: required
+#dist: trusty
+
 # Use container-based infrastructure
 sudo: false
 

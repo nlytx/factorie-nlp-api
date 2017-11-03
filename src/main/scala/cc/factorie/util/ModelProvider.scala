@@ -16,7 +16,7 @@ import java.io._
 import java.net.URL
 import java.nio.file.{Path, Paths}
 
-import cc.factorie.app.nlp.lexicon.LexiconsProvider
+import cc.factorie.nlp.lexicon.LexiconsProvider
 
 import scala.language.implicitConversions
 import scala.reflect.runtime.universe.{TypeTag, typeTag}
