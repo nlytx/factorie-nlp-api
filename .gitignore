@@ -54,3 +54,6 @@ fabric.properties
 /src/main/scala/worksheet.sc
 
 /src/main/flex/EnglishLexer.flex
+/src/main/resources/models/
+/target/
+/src/main/scala/io/nlytx/factorie_nlp/examples.sc

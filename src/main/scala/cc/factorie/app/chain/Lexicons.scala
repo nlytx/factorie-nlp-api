@@ -13,7 +13,7 @@
 
 package cc.factorie.app.chain
 
-import cc.factorie.app.nlp.{Token, TokenSpan}
+import cc.factorie.nlp.{Token, TokenSpan}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
